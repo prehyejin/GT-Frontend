@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom';
 import routes from './routes';
 import GlobalStyle from './GlobalStyle';
 import { Reset } from 'styled-reset'
+import reset from 'styled-reset'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
