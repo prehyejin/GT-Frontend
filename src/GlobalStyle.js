@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #root {
-    border: solid red;
+    
     height: 100vh;
     width: 100vw;
   }

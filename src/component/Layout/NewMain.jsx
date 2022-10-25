@@ -1,39 +1,101 @@
 import styled from 'styled-components';
-import CheckList from '../Overview/CheckList';
-// import ConcentratedWater from "../Overview/ConcentratedWater";
-// import TreatedWater from "../Overview/TreatedWater";
-import MyResponsiveLine from '../Overview/WaterGraph';
-import SimpleListMenu from '../Overview/Menu.jsx';
+import SelectBasic from '../Overview/SelectList';
+// import DefaultWithNoConfig from '../Overview/GaugeChart';
+import ReactSpeedometer from 'react-d3-speedometer';
+import WaterGraph from '../Overview/WaterGraph';
+import WaterStreamGraph from '../Overview/WaterStreamGraph';
 
 const Contents = styled.div`
-  color: white;
   display: flex;
   height: 100%;
   align-items: center;
-  justify-content: center;
 `;
 
 const Text = styled.h2`
   font-weight: 600;
   font-size: 20px;
+  margin: 20px;
 `;
 
-const Container = styled.div`
-  height: 100px;
-  background-color: black;
-  color: white;
+const SelectRow = styled.div`
+  height: 60px;
+  width: 100px;
+  display: flex;
+  margin-bottom: 10px;
 `;
 
-const Wrapper = styled.div`
-  height: 300px;
+const SelectLocation = styled.div`
+  height: 20px;
+  width: 100px;
+  margin-right: 20px;
 `;
 
-const WaterFlowBox = styled.div`
-  height: 200px;
-  width: 200px;
-  background-color: #fafafa;
+const SelectCity = styled.div`
+  height: 60px;
+  width: 100px;
+  margin-right: 20px;
 `;
-// const MenuDropdownList = styled.nav``;
+
+const Location = styled.h2`
+  font-size: 12px;
+`;
+
+const City = styled.h2`
+  font-size: 30px;
+`;
+
+const Connection = styled.h2`
+  font-size: 12px;
+  color: grey;
+  margin-right: 10px;
+`;
+
+const Off = styled.h2`
+  font-size: 12px;
+  color: red;
+  margin-left: 10px;
+`;
+const On = styled.h2`
+  font-size: 12px;
+  color: green;
+`;
+const MonitoringText = styled.h2`
+  font-size: 40px;
+  color: Black;
+`;
+
+const ConnectionRow = styled.div`
+  display: flex;
+`;
+const ReactSpeedometerWrapper = styled.div`
+  height: 180px;
+`;
+
+const FlowRateText = styled.h2`
+  font-size: 16px;
+  color: Black;
+`;
+const FlowRateValue = styled.h2`
+  font-size: 25px;
+  color: Black;
+`;
+
+const WaterGraphWrapper = styled.div`
+  height: 400px;
+  width: 600px;
+`;
+
+const MonitoringWrapper = styled.div`
+  display: flex;
+`;
+
+const GaugeChartWrapper = styled.div``;
+
+const GaugeChartColumn = styled.div``;
+
+const OverviewWrapper = styled.div`
+  margin: 30px;
+`;
 
 let raw_data = [
   {
@@ -307,16 +369,80 @@ let raw_data = [
     ],
   },
 ];
-const Main = () => {
+
+let stream_data = [
+  {
+    WaterProduction: 30,
+  },
+  {
+    WaterProduction: 45,
+  },
+  {
+    WaterProduction: 48,
+  },
+  {
+    WaterProduction: 59,
+  },
+  {
+    WaterProduction: 65,
+  },
+  {
+    WaterProduction: 79,
+  },
+  {
+    WaterProduction: 93,
+  },
+  {
+    WaterProduction: 112,
+  },
+];
+
+export default function NewMain() {
   return (
     <div>
-      {/* <SimpleListMenu></SimpleListMenu> */}
-      {/* <Wrapper>
-        <MyResponsiveLine data={raw_data}></MyResponsiveLine>
-      </Wrapper>
-      <CheckList></CheckList> */}
+      <OverviewWrapper>
+        <SelectRow>
+          <SelectLocation>
+            <SelectBasic></SelectBasic>
+          </SelectLocation>
+          <SelectCity>
+            <SelectBasic></SelectBasic>
+          </SelectCity>
+        </SelectRow>
+        <Location> CPA 004 - 01</Location>
+        <City> Kathandra </City>
+        <ConnectionRow>
+          <Connection> Connection </Connection>
+          <On> On</On>
+          <Off> Off</Off>
+        </ConnectionRow>
+        <MonitoringText>Monitoring</MonitoringText>
+        <hr />
+        <MonitoringWrapper>
+          <GaugeChartColumn>
+            <GaugeChartWrapper>
+              <ReactSpeedometerWrapper>
+                <ReactSpeedometer></ReactSpeedometer>
+              </ReactSpeedometerWrapper>
+              <FlowRateText>농축수 순간 유량(LPM)</FlowRateText>
+              <FlowRateValue>0</FlowRateValue>
+            </GaugeChartWrapper>
+
+            <GaugeChartWrapper>
+              <ReactSpeedometerWrapper>
+                <ReactSpeedometer></ReactSpeedometer>
+              </ReactSpeedometerWrapper>
+              <FlowRateText>처리수 순간 유량(LPM)</FlowRateText>
+              <FlowRateValue>0</FlowRateValue>
+            </GaugeChartWrapper>
+          </GaugeChartColumn>
+
+          <WaterGraphWrapper>
+            {/* <WaterGraph data={raw_data}></WaterGraph> */}
+            <WaterStreamGraph data={stream_data}></WaterStreamGraph>
+          </WaterGraphWrapper>
+        </MonitoringWrapper>
+      </OverviewWrapper>
     </div>
   );
-};
-
-export default Main;
+}

@@ -1,16 +1,14 @@
-import Header from '../../component/Layout/Header'
-import Main from '../../component/Layout/Main'
-import Footer from '../../component/Layout/Footer'
-import styled from "styled-components";
-import GlobalStyle from "../../GlobalStyle";
+import Header from '../../component/Layout/Header';
+// import Main from '../../component/Layout/Main';
+import NewMain from '../../component/Layout/NewMain';
+import Footer from '../../component/Layout/Footer';
 
-
-export default function MainPage(){
-    return (
-        <div>
-            <Header />
-            <Main />
-            <Footer /> 
-        </div>
-    )
-  }
+export default function MainPage() {
+  return (
+    <div>
+      <Header />
+      <NewMain />
+      <Footer />
+    </div>
+  );
+}
