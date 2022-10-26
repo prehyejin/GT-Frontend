@@ -4,6 +4,8 @@ import SelectBasic from '../Overview/SelectList';
 import ReactSpeedometer from 'react-d3-speedometer';
 import WaterGraph from '../Overview/WaterGraph';
 import WaterStreamGraph from '../Overview/WaterStreamGraph';
+import WaterLogoSrc from '../../img/Water_1.png';
+import FacilityStructureSrc from '../../img/FacilityStructure.png';
 
 const Contents = styled.div`
   display: flex;
@@ -89,12 +91,36 @@ const MonitoringWrapper = styled.div`
   display: flex;
 `;
 
-const GaugeChartWrapper = styled.div``;
+const GaugeChartWrapper = styled.div`
+  margin-bottom: 15px;
+`;
 
 const GaugeChartColumn = styled.div``;
 
 const OverviewWrapper = styled.div`
   margin: 30px;
+`;
+
+const WaterLogo = styled.img`
+  height: 60px;
+  width: 60px;
+  margin-right: 20px;
+`;
+
+const FacilityStructureImg = styled.img`
+  width: 900px;
+  margin-right: 20px;
+`;
+
+const FlowRateWrapper = styled.div``;
+
+const WaterRateWrapper = styled.div`
+  display: flex;
+`;
+
+const CheckListText = styled.h2`
+  font-size: 40px;
+  color: Black;
 `;
 
 let raw_data = [
@@ -424,16 +450,26 @@ export default function NewMain() {
               <ReactSpeedometerWrapper>
                 <ReactSpeedometer></ReactSpeedometer>
               </ReactSpeedometerWrapper>
-              <FlowRateText>농축수 순간 유량(LPM)</FlowRateText>
-              <FlowRateValue>0</FlowRateValue>
+              <WaterRateWrapper>
+                <WaterLogo src={WaterLogoSrc}></WaterLogo>
+                <FlowRateWrapper>
+                  <FlowRateText>농축수 순간 유량(LPM)</FlowRateText>
+                  <FlowRateValue>0</FlowRateValue>
+                </FlowRateWrapper>
+              </WaterRateWrapper>
             </GaugeChartWrapper>
 
             <GaugeChartWrapper>
               <ReactSpeedometerWrapper>
                 <ReactSpeedometer></ReactSpeedometer>
               </ReactSpeedometerWrapper>
-              <FlowRateText>처리수 순간 유량(LPM)</FlowRateText>
-              <FlowRateValue>0</FlowRateValue>
+              <WaterRateWrapper>
+                <WaterLogo src={WaterLogoSrc}></WaterLogo>
+                <FlowRateWrapper>
+                  <FlowRateText>농축수 순간 유량(LPM)</FlowRateText>
+                  <FlowRateValue>0</FlowRateValue>
+                </FlowRateWrapper>
+              </WaterRateWrapper>
             </GaugeChartWrapper>
           </GaugeChartColumn>
 
@@ -442,6 +478,11 @@ export default function NewMain() {
             <WaterStreamGraph data={stream_data}></WaterStreamGraph>
           </WaterGraphWrapper>
         </MonitoringWrapper>
+
+        <hr />
+
+        <CheckListText>Check List</CheckListText>
+        <FacilityStructureImg src={FacilityStructureSrc}></FacilityStructureImg>
       </OverviewWrapper>
     </div>
   );
