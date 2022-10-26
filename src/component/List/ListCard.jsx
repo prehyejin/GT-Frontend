@@ -15,10 +15,13 @@ const WaterLogo = styled.img`
 
 const CumProductionWrapper = styled.div`
   display: flex;
+  gap: 1rem;
 `;
 
-const CardWrapper = styled.div`
+const TextWrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 `;
 
 export default function FailityCard({ data /* see data tab */ }) {
@@ -40,18 +43,22 @@ export default function FailityCard({ data /* see data tab */ }) {
           <Typography gutterBottom variant="h5" component="div">
             {data.id} {data.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            농축수 순간 유량(LPM) 0
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            처리수 순간 유량(LPM) 10
-          </Typography>
-          <CumProductionWrapper>
-            <WaterLogo src={WaterLogoSrc}></WaterLogo>
-            <Typography variant="body1" color="text.secondary" marginTop={'5px'}>
-              현 누적 식수 생산량 7.2 ton
-            </Typography>
-          </CumProductionWrapper>
+          <TextWrapper>
+            <div>
+              <Typography variant="body2" color="text.secondary">
+                농축수 순간 유량(LPM) 0
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                처리수 순간 유량(LPM) 10
+              </Typography>
+            </div>
+            <CumProductionWrapper>
+              <WaterLogo src={WaterLogoSrc}></WaterLogo>
+              <Typography variant="body1" color="text.secondary" marginTop={'5px'}>
+                현 누적 식수 생산량 7.2 ton
+              </Typography>
+            </CumProductionWrapper>
+          </TextWrapper>
         </CardContent>
       </CardActionArea>
     </Card>
