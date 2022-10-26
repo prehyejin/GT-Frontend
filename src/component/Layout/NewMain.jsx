@@ -1,67 +1,68 @@
+import { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import SelectBasic from '../Overview/SelectList';
+
 // import DefaultWithNoConfig from '../Overview/GaugeChart';
 import ReactSpeedometer from 'react-d3-speedometer';
-import WaterGraph from '../Overview/WaterGraph';
 import WaterStreamGraph from '../Overview/WaterStreamGraph';
 import WaterLogoSrc from '../../img/Water_1.png';
 import FacilityStructureSrc from '../../img/FacilityStructure.png';
+import WaterGaugeChart from '../Overview/GaugeChart';
+
+import Select from '../Select';
+import useFetch from '../../hooks/useFetch';
+
+import {
+  initDistrictsWithCities,
+  rawData,
+  stream_data,
+  con_water_rate,
+  treated_water_rate,
+} from '../../constants/district';
 
 const Contents = styled.div`
-  display: flex;
-  height: 100%;
-  align-items: center;
-`;
-
-const Text = styled.h2`
-  font-weight: 600;
-  font-size: 20px;
-  margin: 20px;
+  padding: 1.5rem;
 `;
 
 const SelectRow = styled.div`
-  height: 60px;
-  width: 100px;
+  height: 70px;
   display: flex;
-  margin-bottom: 10px;
+  align-items: center;
+  gap: 1rem;
+  padding: 10px;
 `;
 
-const SelectLocation = styled.div`
-  height: 20px;
-  width: 100px;
-  margin-right: 20px;
-`;
+const SelectLocation = styled.div``;
 
-const SelectCity = styled.div`
-  height: 60px;
-  width: 100px;
-  margin-right: 20px;
-`;
+const SelectCity = styled.div``;
 
 const Location = styled.h2`
+  font-family: Pretendard-Light;
   font-size: 12px;
 `;
 
 const City = styled.h2`
+  font-family: Pretendard-Light;
   font-size: 30px;
 `;
 
 const Connection = styled.h2`
-  font-size: 12px;
+  font-family: Pretendard-Light;
+  font-size: 18px;
   color: grey;
-  margin-right: 10px;
 `;
 
 const Off = styled.h2`
-  font-size: 12px;
+  font-family: Pretendard-Light;
+  font-size: 18px;
   color: red;
-  margin-left: 10px;
 `;
 const On = styled.h2`
-  font-size: 12px;
+  font-family: Pretendard-Light;
+  font-size: 18px;
   color: green;
 `;
 const MonitoringText = styled.h2`
+  font-family: Pretendard-Light;
   font-size: 40px;
   color: Black;
 `;
@@ -69,421 +70,210 @@ const MonitoringText = styled.h2`
 const ConnectionRow = styled.div`
   display: flex;
 `;
-const ReactSpeedometerWrapper = styled.div`
-  height: 180px;
-`;
+const ReactSpeedometerWrapper = styled.div``;
 
 const FlowRateText = styled.h2`
+  font-family: Pretendard-Light;
   font-size: 16px;
-  color: Black;
+  color: #222222;
+  font-weight: semibold;
 `;
 const FlowRateValue = styled.h2`
+  font-family: Pretendard-Light;
   font-size: 25px;
   color: Black;
 `;
 
 const WaterGraphWrapper = styled.div`
-  height: 400px;
-  width: 600px;
+  height: 100%;
+  width: 500px;
 `;
 
 const MonitoringWrapper = styled.div`
   display: flex;
+  align-items: center;
+  padding: 1rem;
+`;
+
+const GaugeChartColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
+  gap: 2rem;
 `;
 
 const GaugeChartWrapper = styled.div`
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `;
 
-const GaugeChartColumn = styled.div``;
-
-const OverviewWrapper = styled.div`
-  margin: 30px;
-`;
+const OverviewWrapper = styled.div``;
 
 const WaterLogo = styled.img`
-  height: 60px;
-  width: 60px;
-  margin-right: 20px;
+  height: 50px;
+  width: 50px;
 `;
 
+const FacilityStructureImgWrapper = styled.div`
+  width: 100%;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const FacilityStructureImg = styled.img`
-  width: 900px;
-  margin-right: 20px;
+  width: 100%;
 `;
 
-const FlowRateWrapper = styled.div``;
+const FlowRateWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+`;
 
 const WaterRateWrapper = styled.div`
   display: flex;
+  gap: 0.5rem;
+  margin-top: -1rem;
 `;
 
 const CheckListText = styled.h2`
+  font-family: Pretendard-Light;
   font-size: 40px;
   color: Black;
 `;
 
-let raw_data = [
-  {
-    id: 'japan',
-    color: 'hsl(112, 70%, 50%)',
-    data: [
-      {
-        x: 'plane',
-        y: 154,
-      },
-      {
-        x: 'helicopter',
-        y: 165,
-      },
-      {
-        x: 'boat',
-        y: 8,
-      },
-      {
-        x: 'train',
-        y: 97,
-      },
-      {
-        x: 'subway',
-        y: 188,
-      },
-      {
-        x: 'bus',
-        y: 121,
-      },
-      {
-        x: 'car',
-        y: 18,
-      },
-      {
-        x: 'moto',
-        y: 151,
-      },
-      {
-        x: 'bicycle',
-        y: 208,
-      },
-      {
-        x: 'horse',
-        y: 83,
-      },
-      {
-        x: 'skateboard',
-        y: 195,
-      },
-      {
-        x: 'others',
-        y: 137,
-      },
-    ],
-  },
-  {
-    id: 'france',
-    color: 'hsl(37, 70%, 50%)',
-    data: [
-      {
-        x: 'plane',
-        y: 133,
-      },
-      {
-        x: 'helicopter',
-        y: 24,
-      },
-      {
-        x: 'boat',
-        y: 161,
-      },
-      {
-        x: 'train',
-        y: 196,
-      },
-      {
-        x: 'subway',
-        y: 11,
-      },
-      {
-        x: 'bus',
-        y: 234,
-      },
-      {
-        x: 'car',
-        y: 4,
-      },
-      {
-        x: 'moto',
-        y: 174,
-      },
-      {
-        x: 'bicycle',
-        y: 125,
-      },
-      {
-        x: 'horse',
-        y: 148,
-      },
-      {
-        x: 'skateboard',
-        y: 195,
-      },
-      {
-        x: 'others',
-        y: 271,
-      },
-    ],
-  },
-  {
-    id: 'us',
-    color: 'hsl(346, 70%, 50%)',
-    data: [
-      {
-        x: 'plane',
-        y: 149,
-      },
-      {
-        x: 'helicopter',
-        y: 296,
-      },
-      {
-        x: 'boat',
-        y: 275,
-      },
-      {
-        x: 'train',
-        y: 100,
-      },
-      {
-        x: 'subway',
-        y: 216,
-      },
-      {
-        x: 'bus',
-        y: 282,
-      },
-      {
-        x: 'car',
-        y: 160,
-      },
-      {
-        x: 'moto',
-        y: 141,
-      },
-      {
-        x: 'bicycle',
-        y: 220,
-      },
-      {
-        x: 'horse',
-        y: 241,
-      },
-      {
-        x: 'skateboard',
-        y: 108,
-      },
-      {
-        x: 'others',
-        y: 59,
-      },
-    ],
-  },
-  {
-    id: 'germany',
-    color: 'hsl(279, 70%, 50%)',
-    data: [
-      {
-        x: 'plane',
-        y: 208,
-      },
-      {
-        x: 'helicopter',
-        y: 31,
-      },
-      {
-        x: 'boat',
-        y: 249,
-      },
-      {
-        x: 'train',
-        y: 215,
-      },
-      {
-        x: 'subway',
-        y: 106,
-      },
-      {
-        x: 'bus',
-        y: 71,
-      },
-      {
-        x: 'car',
-        y: 81,
-      },
-      {
-        x: 'moto',
-        y: 125,
-      },
-      {
-        x: 'bicycle',
-        y: 295,
-      },
-      {
-        x: 'horse',
-        y: 206,
-      },
-      {
-        x: 'skateboard',
-        y: 29,
-      },
-      {
-        x: 'others',
-        y: 196,
-      },
-    ],
-  },
-  {
-    id: 'norway',
-    color: 'hsl(176, 70%, 50%)',
-    data: [
-      {
-        x: 'plane',
-        y: 264,
-      },
-      {
-        x: 'helicopter',
-        y: 217,
-      },
-      {
-        x: 'boat',
-        y: 166,
-      },
-      {
-        x: 'train',
-        y: 124,
-      },
-      {
-        x: 'subway',
-        y: 117,
-      },
-      {
-        x: 'bus',
-        y: 5,
-      },
-      {
-        x: 'car',
-        y: 231,
-      },
-      {
-        x: 'moto',
-        y: 208,
-      },
-      {
-        x: 'bicycle',
-        y: 251,
-      },
-      {
-        x: 'horse',
-        y: 157,
-      },
-      {
-        x: 'skateboard',
-        y: 273,
-      },
-      {
-        x: 'others',
-        y: 242,
-      },
-    ],
-  },
-];
+const FontWrapper = styled.h2`
+  font-family: Pretendard-Light;
+`;
 
-let stream_data = [
-  {
-    WaterProduction: 30,
-  },
-  {
-    WaterProduction: 45,
-  },
-  {
-    WaterProduction: 48,
-  },
-  {
-    WaterProduction: 59,
-  },
-  {
-    WaterProduction: 65,
-  },
-  {
-    WaterProduction: 79,
-  },
-  {
-    WaterProduction: 93,
-  },
-  {
-    WaterProduction: 112,
-  },
-];
+const GagueChartComponent = ({ chartData, imageSrc, rateData }) => {
+  return (
+    <GaugeChartWrapper>
+      <ReactSpeedometerWrapper>
+        <WaterGaugeChart data={chartData}></WaterGaugeChart>
+      </ReactSpeedometerWrapper>
+      <WaterRateWrapper>
+        <WaterLogo src={imageSrc} height={'1.6rem'} />
+        <FlowRateWrapper>
+          <FlowRateText>처리수 순간 유량(LPM)</FlowRateText>
+          <FlowRateValue>{rateData}</FlowRateValue>
+        </FlowRateWrapper>
+      </WaterRateWrapper>
+    </GaugeChartWrapper>
+  );
+};
+function useSelectDistrict(districts = []) {
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+
+  const currentDistrictWithCities = useMemo(
+    () => districts.find(({ district }) => district === selectedDistrict),
+    [selectedDistrict],
+  );
+  const cities = currentDistrictWithCities ? currentDistrictWithCities.cities : [];
+
+  useEffect(() => {
+    if (districts.length === 0) return; // undefined
+    // TODO: selectedDistrict 초기값 설정, url 매핑
+    setSelectedDistrict(districts[0]);
+  }, []);
+
+  return {
+    selectedDistrict,
+    setSelectedDistrict,
+    cities,
+  };
+}
 
 export default function NewMain() {
+  const { data: districtsWithCities } = useFetch(initDistrictsWithCities, 300);
+
+  const { selectedDistrict, cities, setSelectedDistrict } = useSelectDistrict(districtsWithCities);
+  const [selectedCity, setSelectedCity] = useState('');
+
+  const districts = districtsWithCities?.map((districtWithCities) => districtWithCities.district);
+
+  useEffect(() => {
+    if (!districtsWithCities) return;
+  }, [districtsWithCities]);
+
   return (
-    <div>
+    <Contents>
       <OverviewWrapper>
         <SelectRow>
           <SelectLocation>
-            <SelectBasic></SelectBasic>
+            <Select
+              label="구역"
+              onChangeSelected={({ target: { value } }) => {
+                const district = districts.find((_district) => _district === value);
+                setSelectedCity('');
+                setSelectedDistrict(district);
+              }}
+              selected={selectedDistrict}
+              items={districts}
+            />
           </SelectLocation>
-          <SelectCity>
-            <SelectBasic></SelectBasic>
-          </SelectCity>
+          {cities.length > 0 && (
+            <SelectCity>
+              <Select
+                label="도시"
+                onChangeSelected={({ target: { value } }) => {
+                  const city = cities.find((_city) => _city.name === value);
+                  setSelectedCity(city);
+                }}
+                selected={selectedCity?.name ?? ''}
+                items={cities}
+                itemKey={'name'}
+                keyProperty={'cityId'}
+              />
+            </SelectCity>
+          )}
         </SelectRow>
-        <Location> CPA 004 - 01</Location>
-        <City> Kathandra </City>
-        <ConnectionRow>
-          <Connection> Connection </Connection>
-          <On> On</On>
-          <Off> Off</Off>
-        </ConnectionRow>
-        <MonitoringText>Monitoring</MonitoringText>
-        <hr />
-        <MonitoringWrapper>
-          <GaugeChartColumn>
-            <GaugeChartWrapper>
-              <ReactSpeedometerWrapper>
-                <ReactSpeedometer></ReactSpeedometer>
-              </ReactSpeedometerWrapper>
-              <WaterRateWrapper>
-                <WaterLogo src={WaterLogoSrc}></WaterLogo>
-                <FlowRateWrapper>
-                  <FlowRateText>농축수 순간 유량(LPM)</FlowRateText>
-                  <FlowRateValue>0</FlowRateValue>
-                </FlowRateWrapper>
-              </WaterRateWrapper>
-            </GaugeChartWrapper>
+        {selectedDistrict && <Location> {selectedDistrict.toString()}</Location>}
+        {selectedCity && selectedCity?.cityId && (
+          <>
+            <City> {selectedCity.name} </City>
+            <ConnectionRow>
+              <Connection> Connection </Connection>
+              <On> On</On>
+              <Off> Off</Off>
+            </ConnectionRow>
+            <MonitoringText>Monitoring</MonitoringText>
+            <hr />
+            <MonitoringWrapper>
+              <GaugeChartColumn>
+                <GagueChartComponent
+                  chartData={con_water_rate}
+                  rateData={con_water_rate}
+                  imageSrc={WaterLogoSrc}
+                />
+                <GagueChartComponent
+                  chartData={treated_water_rate}
+                  rateData={treated_water_rate}
+                  imageSrc={WaterLogoSrc}
+                />
+              </GaugeChartColumn>
 
-            <GaugeChartWrapper>
-              <ReactSpeedometerWrapper>
-                <ReactSpeedometer></ReactSpeedometer>
-              </ReactSpeedometerWrapper>
-              <WaterRateWrapper>
-                <WaterLogo src={WaterLogoSrc}></WaterLogo>
-                <FlowRateWrapper>
-                  <FlowRateText>농축수 순간 유량(LPM)</FlowRateText>
-                  <FlowRateValue>0</FlowRateValue>
-                </FlowRateWrapper>
-              </WaterRateWrapper>
-            </GaugeChartWrapper>
-          </GaugeChartColumn>
+              <WaterGraphWrapper>
+                <div style={{ height: 400 }}>
+                  <WaterStreamGraph data={stream_data}></WaterStreamGraph>
+                </div>
+              </WaterGraphWrapper>
+            </MonitoringWrapper>
 
-          <WaterGraphWrapper>
-            {/* <WaterGraph data={raw_data}></WaterGraph> */}
-            <WaterStreamGraph data={stream_data}></WaterStreamGraph>
-          </WaterGraphWrapper>
-        </MonitoringWrapper>
+            <hr />
 
-        <hr />
-
-        <CheckListText>Check List</CheckListText>
-        <FacilityStructureImg src={FacilityStructureSrc}></FacilityStructureImg>
+            <CheckListText>Check List</CheckListText>
+            <FacilityStructureImgWrapper>
+              <FacilityStructureImg src={FacilityStructureSrc}></FacilityStructureImg>
+            </FacilityStructureImgWrapper>
+          </>
+        )}
       </OverviewWrapper>
-    </div>
+    </Contents>
   );
 }

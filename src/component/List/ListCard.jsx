@@ -11,18 +11,21 @@ import styled from 'styled-components';
 const WaterLogo = styled.img`
   height: 30px;
   width: 30px;
-  margin-right: 10px;
 `;
 
 const CumProductionWrapper = styled.div`
   display: flex;
-  margin-top: 5px;
+`;
+
+const CardWrapper = styled.div`
+  display: flex;
 `;
 
 export default function FailityCard({ data /* see data tab */ }) {
   const imgSrc = '../../img/cards/' + String(data.imgSrc) + '.jpg';
+  // const imgSrc = 'public/img/cards' + String(data.imgSrc) + '.jpg';
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card style={{ width: '30%', borderRadius: 10 }}>
       <CardActionArea>
         <CardMedia
           component="img"

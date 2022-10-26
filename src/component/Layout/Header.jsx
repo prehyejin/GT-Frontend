@@ -1,56 +1,52 @@
 import styled from 'styled-components';
-import GlobalStyle from '../../GlobalStyle';
 import { Link } from 'react-router-dom';
 
-const Contents = styled.div`
-  display: flex;
-  height: 100%;
-  align-items: center;
-  float: right;
-`;
-
 const Text = styled.h2`
+  font-family: Pretendard-Light;
   font-weight: 600;
   font-size: 20px;
-  margin: 20px;
 `;
 
 const Container = styled.div`
   height: 60px;
   background-color: #f2f2f2;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
 `;
 const Logo = styled.img`
-  /* height: 60px; */
-  width: 80px;
+  height: 100%;
 `;
 
 const LogoWrapper = styled.div`
-  margin-top: 5px;
-  margin-right: 10px;
-  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80%;
+  padding: 0.5rem;
 `;
 
 const MenuWrapper = styled.div`
   display: flex;
-  margin-right: auto;
+  align-items: center;
+  gap: 1rem;
 `;
 
 export default function Header() {
-  const logoSrc = '../../../img/logo/basic_logo.png';
   return (
     <Container>
       <MenuWrapper>
-        <Link to="/">
+        <Link to="/" style={{ textDecoration: 'none' }}>
           <Text> Overview</Text>
         </Link>
-        <Link to="/list">
+        <Link to="/list" style={{ textDecoration: 'none' }}>
           <Text> List</Text>
         </Link>
       </MenuWrapper>
       <LogoWrapper>
-        <Logo src={logoSrc} />
+        <Logo src="/img/logo/basic_logo.png" />
       </LogoWrapper>
     </Container>
   );

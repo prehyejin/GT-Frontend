@@ -1,11 +1,17 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import styled from 'styled-components';
 
-export default function BasicSelect() {
+const Container = styled.div``;
+
+const FontWrapper = styled.h2`
+  font-size: 1rem;
+`;
+
+export default function SelectDistrict({ data }) {
   const [age, setAge] = React.useState('');
 
   const handleChange = (event) => {
@@ -13,21 +19,31 @@ export default function BasicSelect() {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Container>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">위치</InputLabel>
+        <InputLabel size="small">
+          <FontWrapper>위치</FontWrapper>
+        </InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={age}
           label="Age"
           onChange={handleChange}
+          style={{ width: '8rem', height: '2.8rem' }}
         >
-          <MenuItem value={10}>CPA 004</MenuItem>
-          <MenuItem value={20}>CPA 005</MenuItem>
-          <MenuItem value={30}>Kathandra</MenuItem>
+          {data.map((district) => {
+            return (
+              <MenuItem value={10} key={district.id}>
+                <FontWrapper>{district.name}</FontWrapper>
+              </MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
-    </Box>
+    </Container>
+    // <Box width={w} marginRight={m} height="100px">
+
+    // </Box>
   );
 }

@@ -2,24 +2,21 @@ import styled from 'styled-components';
 
 const Contents = styled.div`
   color: white;
-  display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
+  font-size: 2rem;
 `;
 
-const Text = styled.h2`
+const Text = styled.body`
   font-weight: 600;
-  font-size: 24px;
-  font-family: Arial, Helvetica, sans-serif;
-  /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+  font-size: 20px;
+  font-family: Pretendard-Light;
 `;
 
 const Container = styled.div`
   height: 200px;
   background-color: #2e2e2e;
-  /* background-color: #92e74e; */
-  color: white;
+  display: flex;
+  align-items: center;
+  width: 100%;
 `;
 
 const Footer = () => {

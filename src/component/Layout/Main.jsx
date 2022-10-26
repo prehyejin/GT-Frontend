@@ -310,11 +310,11 @@ let raw_data = [
 const Main = () => {
   return (
     <div>
-      {/* <SimpleListMenu></SimpleListMenu> */}
-      {/* <Wrapper>
+      <SimpleListMenu></SimpleListMenu>
+      <Wrapper>
         <MyResponsiveLine data={raw_data}></MyResponsiveLine>
       </Wrapper>
-      <CheckList></CheckList> */}
+      <CheckList></CheckList>
     </div>
   );
 };
