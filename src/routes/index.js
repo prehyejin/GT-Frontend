@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainPage from "../pages/Main/MainPage";
 import ListPage from "../pages/List/ListPage";
+import CctvPage from "../pages/CCTV/CctvPage";
 const router = createBrowserRouter([
     {
       path: "/",
@@ -9,7 +10,11 @@ const router = createBrowserRouter([
     {
       path: "/list",
       element:<ListPage/>,
-    }
+    },
+    {
+      path: "/cctv",
+      element:<CctvPage/>,
+    },
   ]);
 
   export default router;

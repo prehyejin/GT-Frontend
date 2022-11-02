@@ -44,6 +44,9 @@ export default function Header() {
         <Link to="/list" style={{ textDecoration: 'none' }}>
           <Text> List</Text>
         </Link>
+        <Link to="/cctv" style={{ textDecoration: 'none' }}>
+          <Text> CCTV</Text>
+        </Link>
       </MenuWrapper>
       <LogoWrapper>
         <Logo src="/img/logo/basic_logo.png" />

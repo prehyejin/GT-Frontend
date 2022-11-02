@@ -1,15 +1,25 @@
 import { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-
+import Calendar from 'moedim';
 // import DefaultWithNoConfig from '../Overview/GaugeChart';
 import ReactSpeedometer from 'react-d3-speedometer';
 import WaterStreamGraph from '../Overview/WaterStreamGraph';
+import LineChart from '../Overview/LineChart';
 import WaterLogoSrc from '../../img/Water_1.png';
 import FacilityStructureSrc from '../../img/FacilityStructure.png';
 import WaterGaugeChart from '../Overview/GaugeChart';
+import GoogleMap from '../Overview/GoogleMap';
+
+import { FaCircle } from 'react-icons/fa';
+import { AiOutlineRight, AiOutlineLeft } from 'react-icons/ai';
 
 import Select from '../Select';
 import useFetch from '../../hooks/useFetch';
+
+import Card from '@mui/material/Card';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import dayjs from 'dayjs';
 
 import {
   initDistrictsWithCities,
@@ -17,6 +27,7 @@ import {
   stream_data,
   con_water_rate,
   treated_water_rate,
+  line_stream_data,
 } from '../../constants/district';
 
 const Contents = styled.div`
@@ -51,15 +62,15 @@ const Connection = styled.h2`
   color: grey;
 `;
 
-const Off = styled.h2`
+const OffWrapper = styled.h2`
   font-family: Pretendard-Light;
   font-size: 18px;
   color: red;
 `;
-const On = styled.h2`
+const OnWrapper = styled.h2`
   font-family: Pretendard-Light;
   font-size: 18px;
-  color: green;
+  color: springgreen;
 `;
 const MonitoringText = styled.h2`
   font-family: Pretendard-Light;
@@ -151,6 +162,19 @@ const FontWrapper = styled.h2`
   font-family: Pretendard-Light;
 `;
 
+const ConnectionIconWrapper = styled.div`
+  padding-left: 0.4rem;
+  padding-right: 0.2rem;
+  padding-top: 0.3rem;
+`;
+
+const LineChartWrapper = styled.div`
+  height: 50vh;
+  width: 110%;
+`;
+
+const DayTextPicker = styled.div``;
+
 const GagueChartComponent = ({ chartData, imageSrc, rateData }) => {
   return (
     <GaugeChartWrapper>
@@ -194,7 +218,9 @@ export default function NewMain() {
 
   const { selectedDistrict, cities, setSelectedDistrict } = useSelectDistrict(districtsWithCities);
   const [selectedCity, setSelectedCity] = useState('');
+  const [calendar, setCalendar] = useState(new Date());
 
+  const [day, setDay] = useState(Date());
   const districts = districtsWithCities?.map((districtWithCities) => districtWithCities.district);
 
   useEffect(() => {
@@ -233,16 +259,27 @@ export default function NewMain() {
             </SelectCity>
           )}
         </SelectRow>
+
+        {/* <LocationConnMonitorWrapper> */}
+
         {selectedDistrict && <Location> {selectedDistrict.toString()}</Location>}
         {selectedCity && selectedCity?.cityId && (
           <>
             <City> {selectedCity.name} </City>
             <ConnectionRow>
               <Connection> Connection </Connection>
-              <On> On</On>
-              <Off> Off</Off>
+              <ConnectionIconWrapper>
+                <FaCircle color="springgreen"></FaCircle>
+              </ConnectionIconWrapper>
+
+              <OnWrapper> On</OnWrapper>
+              <ConnectionIconWrapper>
+                <FaCircle color="red"></FaCircle>
+              </ConnectionIconWrapper>
+              <OffWrapper> Off</OffWrapper>
             </ConnectionRow>
             <MonitoringText>Monitoring</MonitoringText>
+
             <hr />
             <MonitoringWrapper>
               <GaugeChartColumn>
@@ -257,12 +294,28 @@ export default function NewMain() {
                   imageSrc={WaterLogoSrc}
                 />
               </GaugeChartColumn>
-
-              <WaterGraphWrapper>
-                <div style={{ height: 400 }}>
-                  <WaterStreamGraph data={stream_data}></WaterStreamGraph>
-                </div>
-              </WaterGraphWrapper>
+              {/* <Calendar value={calendar} onChange={(d) => setCalendar(d)} /> */}
+              <DayTextPicker>
+                <AiOutlineLeft
+                  onClick={({ target: { prevday } }) => {
+                    setDay((prevday) => dayjs(prevday).subtract(1, 'day'));
+                  }}
+                />
+                {dayjs(day).format('YYYY-MM-DD')}
+                <AiOutlineRight
+                  onClick={({ target: { prevday } }) => {
+                    setDay((prevday) => dayjs(prevday).add(1, 'day'));
+                  }}
+                />
+              </DayTextPicker>
+              <Card style={{ width: '40%', height: '20%', borderRadius: 10, marginLeft: '20px' }}>
+                {/* <WaterGraphWrapper> */}
+                <LineChartWrapper>
+                  <LineChart data={line_stream_data}></LineChart>
+                  {/* <WaterStreamGraph data={stream_data}></WaterStreamGraph> */}
+                </LineChartWrapper>
+                {/* </WaterGraphWrapper> */}
+              </Card>
             </MonitoringWrapper>
 
             <hr />

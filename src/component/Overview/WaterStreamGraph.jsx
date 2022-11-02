@@ -1,7 +1,7 @@
 // install (please make sure versions match peerDependencies)
 // yarn add @nivo/core @nivo/stream
 import { ResponsiveStream } from '@nivo/stream';
-
+import { linearGradientDef } from '@nivo/core';
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
 // no chart will be rendered.
@@ -37,31 +37,39 @@ const WaterStreamGraph = ({ data /* see data tab */ }) => (
     fillOpacity={0.85}
     borderColor={{ theme: 'background' }}
     defs={[
-      {
-        id: 'dots',
-        type: 'patternDots',
-        background: 'inherit',
-        color: '#2c998f',
-        size: 4,
-        padding: 2,
-        stagger: true,
-      },
-      {
-        id: 'squares',
-        type: 'patternSquares',
-        background: 'inherit',
-        color: '#e4c912',
-        size: 6,
-        padding: 2,
-        stagger: true,
-      },
+      linearGradientDef('gradientA', [
+        { offset: 0, color: '#8FE458' },
+        { offset: 100, color: '#58DDFF', opacity: 0 },
+      ]),
+      linearGradientDef('gradientB', [
+        { offset: 0, color: '#000' },
+        { offset: 100, color: 'inherit' },
+      ]),
+      // {
+      //   id: 'dots',
+      //   type: 'patternDots',
+      //   background: 'inherit',
+      //   color: '#2c998f',
+      //   size: 4,
+      //   padding: 2,
+      //   stagger: true,
+      // },
+      // {
+      //   id: 'squares',
+      //   type: 'patternSquares',
+      //   background: 'inherit',
+      //   color: '#e4c912',
+      //   size: 6,
+      //   padding: 2,
+      //   stagger: true,
+      // },
     ]}
     fill={[
       {
         match: {
-          id: 'Paul',
+          id: 'WaterProduction',
         },
-        id: 'dots',
+        id: 'gradientA',
       },
       {
         match: {

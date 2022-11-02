@@ -354,3 +354,66 @@ export const initDistrictsWithCities = [
   
   export const con_water_rate = 12;
   export const treated_water_rate = 8;
+
+  export const line_stream_data = [
+    {
+      "id": "japan",
+      // "color": "hsl(28, 70%, 50%)",
+      "data": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 6,
+          "y": 1
+        },
+        {
+          "x": 8,
+          "y": 2
+        },
+        {
+          "x": 10,
+          "y": 4
+        },
+        {
+          "x": 12,
+          "y": 6
+        },
+        {
+          "x": 14,
+          "y": 8
+        },
+        {
+          "x": 16,
+          "y": 11
+        },
+        {
+          "x": 18,
+          "y": 12
+        },
+        {
+          "x": 20,
+          "y": 13
+        },
+        {
+          "x": 22,
+          "y": 15
+        },
+        {
+          "x": 24,
+          "y": 18
+        },
+              
+      ]
+    }
+    
+  ]
