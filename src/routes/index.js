@@ -1,15 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainPage from "../pages/Main/MainPage";
+import OverviewPage from "../pages/Overview/OverviewPage";
 import ListPage from "../pages/List/ListPage";
 import CctvPage from "../pages/CCTV/CctvPage";
+// import OverviewPage from "../pages/Overview";
+
 const router = createBrowserRouter([
     {
       path: "/",
-      element: <MainPage />,
+      element:<ListPage/>,
     },
     {
-      path: "/list",
-      element:<ListPage/>,
+      path: "/overview",
+      element: <OverviewPage />,
+      
     },
     {
       path: "/cctv",

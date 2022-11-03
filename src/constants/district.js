@@ -1,51 +1,54 @@
 export const initDistrictsWithCities = [
     {
-      district: 'CPA 004',
-      cities: [
+      id: 1,
+      name: 'CPA 004',
+      facilities: [
         {
-          cityId: 1,
+          id: 1,
           name: 'Kesra',
         },
         {
-          cityId: 2,
+          id: 2,
           name: 'Tegharia',
         },
         {
-          cityId: 3,
+          id: 3,
           name: 'Sreemonta',
         },
       ],
     },
     {
-      district: 'CPA 005',
-      cities: [
+      id: 2,
+      name: 'CPA 005',
+      facilities: [
         {
-          cityId: 4,
+          id: 4,
           name: 'Tokyo',
         },
         {
-          cityId: 5,
+          id: 5,
           name: 'Osaka',
         },
         {
-          cityId: 6,
+          id: 6,
           name: 'Nara',
         },
       ],
     },
     {
-      district: 'CPA 006',
-      cities: [
+      id: 3,
+      name: 'CPA 006',
+      facilities: [
         {
-          cityId: 7,
+          id: 7,
           name: 'Gwangju',
         },
         {
-          cityId: 8,
+          id: 8,
           name: 'Seoul',
         },
         {
-          cityId: 9,
+          id: 9,
           name: 'Suwon',
         },
       ],

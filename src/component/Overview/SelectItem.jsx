@@ -33,19 +33,16 @@ export default function SelectBox({
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={selected}
-          label="Age"
+          label="Facility"
           onChange={onChangeSelected}
         >
           {Array.isArray(items) &&
             items.length > 0 &&
-            items.map((item) => {
-              const content = itemKey ? item[itemKey] : item.toString();
-              return (
-                <MenuItem value={content} key={keyProperty ? item[keyProperty] : item.toString()}>
-                  <FontWrapper>{content}</FontWrapper>
-                </MenuItem>
-              );
-            })}
+            items.map((item) => (
+              <MenuItem value={item[keyProperty]} key={item[keyProperty]}>
+                <FontWrapper>{item[itemKey]}</FontWrapper>
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
     </Container>

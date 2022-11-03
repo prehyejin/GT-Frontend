@@ -28,7 +28,7 @@ export default function FailityCard({ data /* see data tab */ }) {
   const imgSrc = '../../img/cards/' + String(data.imgSrc) + '.jpg';
   // const imgSrc = 'public/img/cards' + String(data.imgSrc) + '.jpg';
   return (
-    <Card style={{ width: '30%', borderRadius: 10 }}>
+    <Card>
       <CardActionArea>
         <CardMedia
           component="img"

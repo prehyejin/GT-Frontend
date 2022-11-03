@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
 import SelectDistrict from '../../component/Overview/SelectList';
 import FailityCard from '../../component/List/ListCard';
 import Header from '../../component/Layout/Header';
@@ -24,6 +26,13 @@ const FacilityCardList = styled.div`
   gap: 2rem;
   width: 100%;
 `;
+const FacilityCardWrapper = styled(Link)`
+  display: flex;
+  width: 30%;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0 6px 4px #00000020;
+`;
 
 const facilityList = [
   {
@@ -38,6 +47,21 @@ const facilityList = [
   },
   {
     id: 3,
+    name: 'potepur',
+    imgSrc: 45,
+  },
+  {
+    id: 4,
+    name: 'Kesra',
+    imgSrc: 43,
+  },
+  {
+    id: 5,
+    name: 'Tegharia',
+    imgSrc: 44,
+  },
+  {
+    id: 6,
     name: 'potepur',
     imgSrc: 45,
   },
@@ -57,7 +81,7 @@ const districtList = [
 export default function ListPage() {
   // const cardList = ['043_Kesra', '044_Tegharia', '045_potepur', '046_Sreemonta', '047_Kanaidia'];
   return (
-    <div>
+    <>
       <Header />
       <ListFullWrapper>
         <SelectLocation>
@@ -66,10 +90,15 @@ export default function ListPage() {
         <LoactionText>CPA 001</LoactionText>
         <FacilityCardList>
           {facilityList.map((facility) => (
-            <FailityCard key={facility.id} data={facility}></FailityCard>
+            <FacilityCardWrapper
+              key={facility.id}
+              to={`/overview?districtId=${1}&facilityId=${facility.id}`}
+            >
+              <FailityCard data={facility}></FailityCard>
+            </FacilityCardWrapper>
           ))}
         </FacilityCardList>
       </ListFullWrapper>
-    </div>
+    </>
   );
 }

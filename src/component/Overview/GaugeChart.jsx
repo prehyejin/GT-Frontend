@@ -9,7 +9,7 @@ export const WaterGaugeChart = ({ data }) => (
     segments={10}
     // endColor="blue"
     // textColor={textColor}
-    height={200}
+    height={'120'}
     paddingVertical={0}
   />
 );
