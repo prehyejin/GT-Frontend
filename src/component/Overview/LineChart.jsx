@@ -1,18 +1,14 @@
-// install (please make sure versions match peerDependencies)
-// yarn add @nivo/core @nivo/line
 import { ResponsiveLine } from '@nivo/line';
 import { linearGradientDef } from '@nivo/core';
 import { green } from '@mui/material/colors';
 import { color } from '@mui/system';
-// make sure parent container have a defined height when using
-// responsive component, otherwise height will be 0 and
-// no chart will be rendered.
-// website examples showcase many properties,
-// you'll often use just a few of them.
+
 const LineChart = ({ data /* see data tab */ }) => (
   <ResponsiveLine
     data={data}
     margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+    // keys={['y']}
+    // indexBy="x"
     xScale={{ type: 'point' }}
     yScale={{
       type: 'linear',
@@ -65,7 +61,7 @@ const LineChart = ({ data /* see data tab */ }) => (
     areaOpacity={0.6}
     useMesh={true}
     legends={[]}
-    fill={[{ match: { id: 'japan' }, id: 'gradientA' }]}
+    fill={[{ match: { id: 'hour' }, id: 'gradientA' }]}
     // layers={['lines']}
   />
 );

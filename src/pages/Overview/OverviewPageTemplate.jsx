@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 
-// import LineChart from '../Overview/LineChart';
+import LineChart from '../../component/Overview/LineChart';
+import BarChart from '../../component/Overview/Barchart';
 import WaterLogoSrc from '../../img/Water_1.png';
 import FacilityStructureSrc from '../../img/FacilityStructure.png';
-// import WaterGaugeChart from '../Overview/GaugeChart';
-// import GaugeChart from 'react-gauge-chart';
+import WaterGaugeChart from '../../component/Overview/GaugeChart';
+import GaugeChart from 'react-gauge-chart';
 
 import { FaCircle } from 'react-icons/fa';
 import { AiOutlineRight, AiOutlineLeft } from 'react-icons/ai';
@@ -23,6 +24,8 @@ import {
   treated_water_rate,
   line_stream_data,
 } from '../../constants/district';
+
+import * as waterstream from '../../constants/waterstream';
 
 import {
   Contents,
@@ -61,61 +64,61 @@ import {
   WaterGraphContainer,
 } from './OverviewPage.style';
 
-// const GagueChartComponent = ({ chartData, imageSrc, rateData }) => {
-//   return (
-//     <GaugeChartWrapper>
-//       <GaugeChart id="gauge-chart1" />
-//       <ReactSpeedometerWrapper>
-//         <WaterGaugeChart data={chartData}></WaterGaugeChart>
-//       </ReactSpeedometerWrapper>
-//       <WaterRateWrapper>
-//         <WaterLogo src={imageSrc} height={'1.6rem'} />
-//         <FlowRateWrapper>
-//           <FlowRateText>처리수 순간 유량(LPM)</FlowRateText>
-//           <FlowRateValue>{rateData}</FlowRateValue>
-//         </FlowRateWrapper>
-//       </WaterRateWrapper>
-//     </GaugeChartWrapper>
-//   );
-// };
-// function useSelectDistrict(districts = [], districtId) {
-//   const [selectedDistrict, setSelectedDistrict] = useState(null);
-//   /** selectedDistrict
-//       {
-//         id: 1,
-//         name: 'CPA 004',
-//         facilities: [
-//           {
-//             id: 1,
-//             name: 'Kesra',
-//           },
-//           {
-//             id: 2,
-//             name: 'Tegharia',
-//           },
-//           {
-//             id: 3,
-//             name: 'Sreemonta',
-//           },
-//         ],
-//       }
-//     */
+const GagueChartComponent = ({ chartData, imageSrc, rateData }) => {
+  return (
+    <GaugeChartWrapper>
+      {/* <GaugeChart id="gauge-chart1" /> */}
+      <ReactSpeedometerWrapper>
+        <WaterGaugeChart data={chartData}></WaterGaugeChart>
+      </ReactSpeedometerWrapper>
+      <WaterRateWrapper>
+        <WaterLogo src={imageSrc} height={'1.6rem'} />
+        <FlowRateWrapper>
+          <FlowRateText>처리수 순간 유량(LPM)</FlowRateText>
+          <FlowRateValue>{rateData}</FlowRateValue>
+        </FlowRateWrapper>
+      </WaterRateWrapper>
+    </GaugeChartWrapper>
+  );
+};
+function useSelectDistrict(districts = [], districtId) {
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  /** selectedDistrict
+      {
+        id: 1,
+        name: 'CPA 004',
+        facilities: [
+          {
+            id: 1,
+            name: 'Kesra',
+          },
+          {
+            id: 2,
+            name: 'Tegharia',
+          },
+          {
+            id: 3,
+            name: 'Sreemonta',
+          },
+        ],
+      }
+    */
 
-//   useEffect(() => {
-//     if (!districtId) return; // null 처리
+  useEffect(() => {
+    if (!districtId) return; // null 처리
 
-//     const _selectedDistrict = districts.find(({ id }) => id === districtId);
-//     if (!_selectedDistrict) {
-//       return;
-//     }
-//     setSelectedDistrict(_selectedDistrict);
-//   }, [districtId]);
+    const _selectedDistrict = districts.find(({ id }) => id === districtId);
+    if (!_selectedDistrict) {
+      return;
+    }
+    setSelectedDistrict(_selectedDistrict);
+  }, [districtId]);
 
-//   return {
-//     selectedDistrict,
-//     setSelectedDistrict,
-//   };
-// }
+  return {
+    selectedDistrict,
+    setSelectedDistrict,
+  };
+}
 
 //
 export default function OverviewPageTemplate({
@@ -137,9 +140,22 @@ export default function OverviewPageTemplate({
 
   const [day, setDay] = useState(Date());
 
-  const [value, setValue] = useState('hour');
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const [timeunit, setTimeunit] = useState('hour');
+  const handleChange = (event, newTimeunit) => {
+    console.log(newTimeunit);
+    setTimeunit(newTimeunit);
+  };
+
+  const timeText = {
+    hour: dayjs(day).format('YYYY-MM-DD'),
+    day: dayjs(day).format('YYYY-MM'),
+    month: dayjs(day).format('YYYY'),
+  };
+
+  const timeOffset = {
+    hour: 'day',
+    day: 'month',
+    month: 'year',
   };
 
   return (
@@ -175,10 +191,10 @@ export default function OverviewPageTemplate({
             </SelectCity>
           )}
         </SelectRow>
-        {/* {selectedDistrict && <Location> {selectedDistrict.toString()}</Location>}
-        {selectedCity && selectedCity?.cityId && (
+        {selectedDistrict && <Location> {selectedDistrict.name}</Location>}
+        {selectedFacility && selectedFacility?.id && (
           <>
-            <City> {selectedCity.name} </City>
+            <City> {selectedFacility.name} </City>
             <ConnectionRow>
               <Connection> Connection </Connection>
               <ConnectionIconWrapper>
@@ -210,13 +226,13 @@ export default function OverviewPageTemplate({
               <WaterGraphContainer>
                 <WaterGraphHeader>
                   <Tabs
-                    value={value}
+                    value={timeunit}
                     onChange={handleChange}
                     textColor="secondary"
                     indicatorColor="secondary"
                     aria-label="secondary tabs example"
                   >
-                    <Tab value="hout" label="Hour" />
+                    <Tab value="hour" label="Hour" />
                     <Tab value="day" label="Day" />
                     <Tab value="month" label="Month" />
                   </Tabs>
@@ -224,19 +240,17 @@ export default function OverviewPageTemplate({
                     <OutlineIconWrapper>
                       <AiOutlineLeft
                         onClick={({ target: { prevday } }) => {
-                          setDay((prevday) => dayjs(prevday).subtract(1, 'day'));
+                          setDay((prevday) => dayjs(prevday).subtract(1, timeOffset[timeunit]));
                         }}
                         size="20"
                       />
                     </OutlineIconWrapper>
-                    <CurrentSelectedTimeText>
-                      {dayjs(day).format('YYYY-MM-DD')}
-                    </CurrentSelectedTimeText>
+                    <CurrentSelectedTimeText>{timeText[timeunit]}</CurrentSelectedTimeText>
 
                     <OutlineIconWrapper>
                       <AiOutlineRight
                         onClick={({ target: { prevday } }) => {
-                          setDay((prevday) => dayjs(prevday).add(1, 'day'));
+                          setDay((prevday) => dayjs(prevday).add(1, timeOffset[timeunit]));
                         }}
                         size="20"
                       />
@@ -246,8 +260,12 @@ export default function OverviewPageTemplate({
                 <WaterGraphCardWrapper>
                   <Card>
                     <LineChartWrapper>
-                      <LineChart data={line_stream_data}></LineChart>
-                      </LineChartWrapper>
+                      {timeunit === 'hour' ? (
+                        <LineChart data={waterstream[timeunit]}></LineChart>
+                      ) : (
+                        <BarChart data={waterstream[timeunit]}></BarChart>
+                      )}
+                    </LineChartWrapper>
                   </Card>
                 </WaterGraphCardWrapper>
               </WaterGraphContainer>
@@ -260,7 +278,7 @@ export default function OverviewPageTemplate({
               <FacilityStructureImg src={FacilityStructureSrc}></FacilityStructureImg>
             </FacilityStructureImgWrapper>
           </>
-        )} */}
+        )}
       </OverviewWrapper>
     </Contents>
   );
