@@ -5,7 +5,7 @@ const Contents = styled.div`
   font-size: 2rem;
 `;
 
-const Text = styled.body`
+const Text = styled.p`
   font-weight: 600;
   font-size: 20px;
   font-family: Pretendard-Light;

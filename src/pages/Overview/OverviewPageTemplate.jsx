@@ -1,30 +1,28 @@
 import { useState, useEffect, useMemo } from 'react';
-
-import LineChart from '../../component/Overview/LineChart';
-import BarChart from '../../component/Overview/Barchart';
-import WaterLogoSrc from '../../img/Water_1.png';
-import FacilityStructureSrc from '../../img/FacilityStructure.png';
-import WaterGaugeChart from '../../component/Overview/GaugeChart';
-import GaugeChart from 'react-gauge-chart';
-
+import dayjs from 'dayjs';
 import { FaCircle } from 'react-icons/fa';
-import { AiOutlineRight, AiOutlineLeft } from 'react-icons/ai';
+import GaugeChart from 'react-gauge-chart';
+import { Card, Tabs, Tab, Typography } from '@mui/material';
 
-import Select from '../../component/Overview/SelectItem';
+import {
+  LineChart,
+  BarChart,
+  WaterGaugeChart,
+  GoogleMap,
+  Select,
+  CalendarButton,
+} from '../../component/Overview';
+
 import useFetch from '../../hooks/useFetch';
 
-import Card from '@mui/material/Card';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import dayjs from 'dayjs';
+import FacilityStructureSrc from '../../img/FacilityStructure.png';
+import WaterLogoSrc from '../../img/Water_1.png';
 
 import {
   initDistrictsWithCities,
   con_water_rate,
   treated_water_rate,
-  line_stream_data,
 } from '../../constants/district';
-
 import * as waterstream from '../../constants/waterstream';
 
 import {
@@ -42,7 +40,6 @@ import {
   ReactSpeedometerWrapper,
   FlowRateText,
   FlowRateValue,
-  WaterGraphWrapper,
   MonitoringWrapper,
   GaugeChartColumn,
   GaugeChartWrapper,
@@ -53,15 +50,17 @@ import {
   FlowRateWrapper,
   WaterRateWrapper,
   CheckListText,
-  FontWrapper,
   ConnectionIconWrapper,
   LineChartWrapper,
-  DayTextPicker,
   WaterGraphHeader,
   WaterGraphCardWrapper,
-  OutlineIconWrapper,
-  CurrentSelectedTimeText,
   WaterGraphContainer,
+  ConnectionHeaderWrapper,
+  MapWrapper,
+  TopWrapper,
+  LocationText,
+  TreatedWaterCardWrapper,
+  TreatedWaterCardText,
 } from './OverviewPage.style';
 
 const GagueChartComponent = ({ chartData, imageSrc, rateData }) => {
@@ -83,26 +82,7 @@ const GagueChartComponent = ({ chartData, imageSrc, rateData }) => {
 };
 function useSelectDistrict(districts = [], districtId) {
   const [selectedDistrict, setSelectedDistrict] = useState(null);
-  /** selectedDistrict
-      {
-        id: 1,
-        name: 'CPA 004',
-        facilities: [
-          {
-            id: 1,
-            name: 'Kesra',
-          },
-          {
-            id: 2,
-            name: 'Tegharia',
-          },
-          {
-            id: 3,
-            name: 'Sreemonta',
-          },
-        ],
-      }
-    */
+  /** selectedDistrict { id: 1, name: 'CPA 004', facilities: [ { id: 1, name: 'Kesra', }] } */
 
   useEffect(() => {
     if (!districtId) return; // null 처리
@@ -120,7 +100,12 @@ function useSelectDistrict(districts = [], districtId) {
   };
 }
 
-//
+const timeOffset = {
+  hour: 'day',
+  day: 'month',
+  month: 'year',
+};
+
 export default function OverviewPageTemplate({
   districtId,
   changeDistrict,
@@ -129,20 +114,16 @@ export default function OverviewPageTemplate({
 }) {
   const { data: districts } = useFetch(initDistrictsWithCities, 300);
 
-  // const { selectedDistrict } = useSelectDistrict(districts, districtId);
   const selectedDistrict = districts?.find((_district) => _district.id === districtId);
   const facilities = selectedDistrict?.facilities ?? [];
-  const selectedFacility = facilities.find(({ id }) => id === facilityId); // facility | undefined
-  /** facility : { id: 4, name: 'Tokyo' } */
-  console.log(selectedDistrict, selectedFacility);
+  const selectedFacility = facilities.find(
+    ({ id }) => id === facilityId,
+  ); /** facility : { id: 4, name: 'Tokyo' } */ // facility | undefined
 
-  const [calendar, setCalendar] = useState(new Date());
-
-  const [day, setDay] = useState(Date());
+  const [day, setDay] = useState(new Date());
 
   const [timeunit, setTimeunit] = useState('hour');
   const handleChange = (event, newTimeunit) => {
-    console.log(newTimeunit);
     setTimeunit(newTimeunit);
   };
 
@@ -152,10 +133,18 @@ export default function OverviewPageTemplate({
     month: dayjs(day).format('YYYY'),
   };
 
-  const timeOffset = {
-    hour: 'day',
-    day: 'month',
-    month: 'year',
+  const [calendarOpened, setCalendarOpened] = useState(false);
+
+  const openCalendar = () => {
+    setCalendarOpened(true);
+  };
+
+  const closeCalendar = () => {
+    setCalendarOpened(false);
+  };
+  const handleChangeDate = (date) => {
+    setDay(date);
+    closeCalendar();
   };
 
   return (
@@ -166,7 +155,6 @@ export default function OverviewPageTemplate({
             <Select
               label="구역"
               onChangeSelected={({ target: { value /* district.id */ } }) => {
-                console.log('onChange district', value);
                 changeDistrict(value);
                 changeFacility(null);
               }}
@@ -194,20 +182,30 @@ export default function OverviewPageTemplate({
         {selectedDistrict && <Location> {selectedDistrict.name}</Location>}
         {selectedFacility && selectedFacility?.id && (
           <>
-            <City> {selectedFacility.name} </City>
-            <ConnectionRow>
-              <Connection> Connection </Connection>
-              <ConnectionIconWrapper>
-                <FaCircle color="springgreen"></FaCircle>
-              </ConnectionIconWrapper>
+            <TopWrapper>
+              <ConnectionHeaderWrapper>
+                <City> {selectedFacility.name} </City>
+                <ConnectionRow>
+                  <Connection> Connection </Connection>
+                  <ConnectionIconWrapper>
+                    <FaCircle color="springgreen"></FaCircle>
+                  </ConnectionIconWrapper>
 
-              <OnWrapper> On</OnWrapper>
-              <ConnectionIconWrapper>
-                <FaCircle color="red"></FaCircle>
-              </ConnectionIconWrapper>
-              <OffWrapper> Off</OffWrapper>
-            </ConnectionRow>
-            <MonitoringText>Monitoring</MonitoringText>
+                  <OnWrapper> On</OnWrapper>
+                  <ConnectionIconWrapper>
+                    <FaCircle color="red"></FaCircle>
+                  </ConnectionIconWrapper>
+                  <OffWrapper> Off</OffWrapper>
+                </ConnectionRow>
+                <MonitoringText>Monitoring</MonitoringText>
+              </ConnectionHeaderWrapper>
+              <MapWrapper>
+                <GoogleMap data={selectedFacility.location}></GoogleMap>
+                <LocationText>
+                  위도: {selectedFacility.location.lat} / 경도: {selectedFacility.location.lon}
+                </LocationText>
+              </MapWrapper>
+            </TopWrapper>
 
             <hr />
             <MonitoringWrapper>
@@ -236,26 +234,21 @@ export default function OverviewPageTemplate({
                     <Tab value="day" label="Day" />
                     <Tab value="month" label="Month" />
                   </Tabs>
-                  <DayTextPicker>
-                    <OutlineIconWrapper>
-                      <AiOutlineLeft
-                        onClick={({ target: { prevday } }) => {
-                          setDay((prevday) => dayjs(prevday).subtract(1, timeOffset[timeunit]));
-                        }}
-                        size="20"
-                      />
-                    </OutlineIconWrapper>
-                    <CurrentSelectedTimeText>{timeText[timeunit]}</CurrentSelectedTimeText>
-
-                    <OutlineIconWrapper>
-                      <AiOutlineRight
-                        onClick={({ target: { prevday } }) => {
-                          setDay((prevday) => dayjs(prevday).add(1, timeOffset[timeunit]));
-                        }}
-                        size="20"
-                      />
-                    </OutlineIconWrapper>
-                  </DayTextPicker>
+                  <CalendarButton
+                    day={day}
+                    isCalendarOpened={calendarOpened}
+                    closeCalendar={closeCalendar}
+                    openCalendar={openCalendar}
+                    onChangeDate={handleChangeDate}
+                    timeText={timeText}
+                    timeunit={timeunit}
+                    addDay={() => {
+                      setDay((prevday) => dayjs(prevday).subtract(1, timeOffset[timeunit]));
+                    }}
+                    subtractDay={() => {
+                      setDay((prevday) => dayjs(prevday).add(1, timeOffset[timeunit]));
+                    }}
+                  />
                 </WaterGraphHeader>
                 <WaterGraphCardWrapper>
                   <Card>
@@ -275,7 +268,36 @@ export default function OverviewPageTemplate({
 
             <CheckListText>Check List</CheckListText>
             <FacilityStructureImgWrapper>
-              <FacilityStructureImg src={FacilityStructureSrc}></FacilityStructureImg>
+              <div style={{ position: 'relative' }}>
+                <FacilityStructureImg src={FacilityStructureSrc}></FacilityStructureImg>
+
+                <div
+                  style={{
+                    fontSize: '1rem',
+                    position: 'absolute',
+                    right: '16%',
+                    bottom: '33%',
+                    display: 'flex',
+                    gap: '1rem',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div>ON</div>
+                  <div>OFF</div>
+                </div>
+              </div>
+              <Card>
+                <TreatedWaterCardWrapper>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Conductivity
+                  </Typography>
+                  <Typography gutterBottom variant="h5" component="div">
+                    PH
+                  </Typography>
+                  {/* <TreatedWaterCardText></TreatedWaterCardText> */}
+                  <TreatedWaterCardText></TreatedWaterCardText>
+                </TreatedWaterCardWrapper>
+              </Card>
             </FacilityStructureImgWrapper>
           </>
         )}

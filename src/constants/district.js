@@ -1,3 +1,8 @@
+export const locationData = {
+  lat: 22.750620,
+  lon: 88.947730
+}
+
 export const initDistrictsWithCities = [
     {
       id: 1,
@@ -6,14 +11,26 @@ export const initDistrictsWithCities = [
         {
           id: 1,
           name: 'Kesra',
+          location: {
+            lat: 22.750620,
+            lon: 88.947730
+          }
         },
         {
           id: 2,
           name: 'Tegharia',
+          location: {
+            lat: 22.750620,
+            lon: 88.947730
+          }
         },
         {
           id: 3,
           name: 'Sreemonta',
+          location: {
+            lat: 22.750620,
+            lon: 88.947730
+          }
         },
       ],
     },
@@ -24,14 +41,26 @@ export const initDistrictsWithCities = [
         {
           id: 4,
           name: 'Tokyo',
+          location: {
+            lat: 22.750620,
+            lon: 88.947730
+          }
         },
         {
           id: 5,
           name: 'Osaka',
+          location: {
+            lat: 22.750620,
+            lon: 88.947730
+          }
         },
         {
           id: 6,
           name: 'Nara',
+          location: {
+            lat: 22.750620,
+            lon: 88.947730
+          }
         },
       ],
     },
@@ -42,14 +71,26 @@ export const initDistrictsWithCities = [
         {
           id: 7,
           name: 'Gwangju',
+          location: {
+            lat: 22.750620,
+            lon: 88.947730
+          }
         },
         {
           id: 8,
           name: 'Seoul',
+          location: {
+            lat: 22.750620,
+            lon: 88.947730
+          }
         },
         {
           id: 9,
           name: 'Suwon',
+          location: {
+            lat: 22.750620,
+            lon: 88.947730
+          }
         },
       ],
     },

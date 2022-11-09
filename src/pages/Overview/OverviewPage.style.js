@@ -106,8 +106,8 @@ const FacilityStructureImgWrapper = styled.div`
   width: 100%;
   padding: 0.5rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction:column;
+  position:relative;
 `;
 const FacilityStructureImg = styled.img`
   width: 100%;
@@ -163,24 +163,68 @@ const WaterGraphCardWrapper = styled.div`
 `;
 
 const OutlineIconWrapper = styled.div`
-  padding-top: 0.3rem;
   &:hover {
-    /* background-color: skyblue; */
     color: blue;
+  }
+  display:flex;
+  align-items:center;
+`;
+
+const CurrentSelectedTimeText = styled.button`
+  font-family: Pretendard-Light;
+  font-size: 16px;
+  color: black;
+  cursor: pointer;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 0 10px;
+`;
+
+const DatePickerWrapper = styled.div`
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+`;
+const DatePickerContainer = styled.div`
+  position:absolute;
+  top: 45px;
+  right: -20px;
+  z-index:1;
+  width:210px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  
+  .custom-calendar{
+    width:100%;
+    display:flex;
   }
 `;
 
-const CurrentSelectedTimeText = styled.h2`
-  font-family: Pretendard-Light;
-  font-size: 20px;
-  color: Black;
-  /* background-color: red; */
-  /* padding */
-  /* margin-bottom: 1rem; */
-`;
 
 const WaterGraphContainer = styled.div``;
 
+const ConnectionHeaderWrapper = styled.div``;
+
+const MapWrapper = styled.div``;
+const TopWrapper = styled.div`
+display: flex;
+justify-content: space-between;
+`;
+const TreatedWaterCardWrapper = styled.div`
+width: 50vw;
+/* height: 100px; */
+
+`;
+
+
+const LocationText = styled.h2``;
+const TreatedWaterCardText = styled.h2``;
 export {
     Contents,
     SelectRow,
@@ -216,4 +260,12 @@ export {
     OutlineIconWrapper,
     CurrentSelectedTimeText,
     WaterGraphContainer,
+    MapWrapper,
+    ConnectionHeaderWrapper,
+    TopWrapper,
+    LocationText,
+    TreatedWaterCardWrapper,
+    TreatedWaterCardText,
+    DatePickerWrapper,
+    DatePickerContainer
 }

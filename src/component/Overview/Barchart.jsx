@@ -16,8 +16,17 @@ const BarChart = ({ data }) => {
           { offset: 100, color: '#58DDFF' },
         ]),
       ]}
-      fill={[{ match: { id: 'japan' }, id: 'gradientA' }]}
-      colors="#3182CE"
+      fill={[
+        // match using object query
+        { match: { id: 'y' }, id: 'gradientA' },
+        // match using function
+        { match: (d) => d.id === 'vue', id: 'gradientB' },
+        // match all, will only affect 'elm', because once a rule match,
+        // others are skipped, so now it acts as a fallback
+        { match: '*', id: 'gradientC' },
+      ]}
+      // fill={[{ match: { id: 'gradientA' } }]}
+      colors="#8FE458"
       animate={true}
       enableLabel={false}
       axisTop={null}
