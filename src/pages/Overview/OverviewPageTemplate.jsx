@@ -171,11 +171,12 @@ export default function OverviewPageTemplate({
             </SelectCity>
           )}
         </SelectRow>
-        {selectedDistrict && <Location> {selectedDistrict.name}</Location>}
+
         {selectedFacility && selectedFacility?.id && (
           <>
             <TopWrapper>
               <ConnectionHeaderWrapper>
+                {selectedDistrict && <Location> {selectedDistrict.name}</Location>}
                 <City> {selectedFacility.name} </City>
                 <ConnectionRow>
                   <Connection> Connection </Connection>

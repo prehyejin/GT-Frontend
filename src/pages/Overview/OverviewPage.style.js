@@ -18,7 +18,8 @@ const SelectCity = styled.div``;
 
 const Location = styled.h2`
   font-family: Pretendard-Light;
-  font-size: 12px;
+  font-size: 15px;
+
 `;
 
 const City = styled.h2`
@@ -222,6 +223,7 @@ const MapWrapper = styled.div``;
 const TopWrapper = styled.div`
 display: flex;
 justify-content: space-between;
+padding-left: 1rem;
 `;
 const TreatedWaterCardWrapper = styled.div`
 width: 50vw;
