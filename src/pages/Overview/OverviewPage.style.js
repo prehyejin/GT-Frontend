@@ -95,11 +95,15 @@ const GaugeChartWrapper = styled.div`
   width: 100%;
 `;
 
-const OverviewWrapper = styled.div``;
+const OverviewWrapper = styled.div`
+  max-width: 1280px;
+  margin: 0 auto;
+`;
 
 const WaterLogo = styled.img`
-  height: 50px;
-  width: 50px;
+  height: 3.5rem;
+  padding-right: 1rem;
+  /* width: 50px; */
 `;
 
 const FacilityStructureImgWrapper = styled.div`
@@ -108,6 +112,9 @@ const FacilityStructureImgWrapper = styled.div`
   display: flex;
   flex-direction:column;
   position:relative;
+  & > div{
+    position:relative;
+  }
 `;
 const FacilityStructureImg = styled.img`
   width: 100%;
@@ -225,6 +232,7 @@ width: 50vw;
 
 const LocationText = styled.h2``;
 const TreatedWaterCardText = styled.h2``;
+
 export {
     Contents,
     SelectRow,
@@ -267,5 +275,5 @@ export {
     TreatedWaterCardWrapper,
     TreatedWaterCardText,
     DatePickerWrapper,
-    DatePickerContainer
+    DatePickerContainer,
 }

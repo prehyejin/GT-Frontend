@@ -25,7 +25,7 @@ const GoogleMap = ({ data }) => {
         defaultZoom={10}
       ></GoogleMapReact> */}
       <iframe
-        width="450"
+        width="500"
         height="130"
         frameborder="0"
         // style="border:0"

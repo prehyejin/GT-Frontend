@@ -10,6 +10,24 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html{
+    font-size:16px;
+  }
+  @media  all and (max-width: 1024px) {
+    html { font-size: 14px; } 
+  }
+  @media  all and (max-width: 800px) {
+    html { font-size: 11px; } 
+  }
+  @media all and  (max-width: 650px) {
+    html { font-size: 10px; } 
+  }
+
+  @media  all and (max-width: 500px) {
+    html { font-size: 8px; } 
+  }
+
+
   body {
     font-family: "Pretendard-Regular", "Helvetica", "Arial", sans-serif;
     line-height: 1.5;

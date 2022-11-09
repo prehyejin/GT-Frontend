@@ -7,10 +7,11 @@ import { Card, Tabs, Tab, Typography } from '@mui/material';
 import {
   LineChart,
   BarChart,
-  WaterGaugeChart,
+  GaugeChart as WaterGaugeChart,
   GoogleMap,
-  Select,
+  SelectItem,
   CalendarButton,
+  PumpState,
 } from '../../component/Overview';
 
 import useFetch from '../../hooks/useFetch';
@@ -73,38 +74,23 @@ const GagueChartComponent = ({ chartData, imageSrc, rateData }) => {
       <WaterRateWrapper>
         <WaterLogo src={imageSrc} height={'1.6rem'} />
         <FlowRateWrapper>
-          <FlowRateText>처리수 순간 유량(LPM)</FlowRateText>
-          <FlowRateValue>{rateData}</FlowRateValue>
+          <FlowRateText>처리수 순간 유량</FlowRateText>
+          <FlowRateValue>{rateData}LPM</FlowRateValue>
         </FlowRateWrapper>
       </WaterRateWrapper>
     </GaugeChartWrapper>
   );
 };
-function useSelectDistrict(districts = [], districtId) {
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
-  /** selectedDistrict { id: 1, name: 'CPA 004', facilities: [ { id: 1, name: 'Kesra', }] } */
-
-  useEffect(() => {
-    if (!districtId) return; // null 처리
-
-    const _selectedDistrict = districts.find(({ id }) => id === districtId);
-    if (!_selectedDistrict) {
-      return;
-    }
-    setSelectedDistrict(_selectedDistrict);
-  }, [districtId]);
-
-  return {
-    selectedDistrict,
-    setSelectedDistrict,
-  };
-}
 
 const timeOffset = {
   hour: 'day',
   day: 'month',
   month: 'year',
 };
+const rawLevelSwitchPosition = { left: '13.5%', bottom: '32%' };
+const feedPumpPosition = { left: '24%', bottom: '32%' };
+const roPumpPosition = { right: '40.5%', bottom: '32%' };
+const drinkLevelSwitchPosition = { right: '14%', bottom: '32%' };
 
 export default function OverviewPageTemplate({
   districtId,
@@ -123,6 +109,7 @@ export default function OverviewPageTemplate({
   const [day, setDay] = useState(new Date());
 
   const [timeunit, setTimeunit] = useState('hour');
+
   const handleChange = (event, newTimeunit) => {
     setTimeunit(newTimeunit);
   };
@@ -147,12 +134,17 @@ export default function OverviewPageTemplate({
     closeCalendar();
   };
 
+  const [rawLevelSwitch, setRawLevelSwitch] = useState(true);
+  const [feedPump, setFeedPump] = useState(false);
+  const [roPump, setRopump] = useState(true);
+  const [drinkLevelSwitch, setDrinkLevelSwitch] = useState(false);
+
   return (
     <Contents>
       <OverviewWrapper>
         <SelectRow>
           <SelectLocation>
-            <Select
+            <SelectItem
               label="구역"
               onChangeSelected={({ target: { value /* district.id */ } }) => {
                 changeDistrict(value);
@@ -166,7 +158,7 @@ export default function OverviewPageTemplate({
           </SelectLocation>
           {selectedDistrict && (
             <SelectCity>
-              <Select
+              <SelectItem
                 label="도시"
                 onChangeSelected={({ target: { value /* city.id */ } }) => {
                   changeFacility(value);
@@ -226,8 +218,9 @@ export default function OverviewPageTemplate({
                   <Tabs
                     value={timeunit}
                     onChange={handleChange}
-                    textColor="secondary"
-                    indicatorColor="secondary"
+                    color="rgba(255, 178, 217, 0.85)"
+                    textColor="rgba(255, 178, 217, 0.85)"
+                    indicatorColor="primary"
                     aria-label="secondary tabs example"
                   >
                     <Tab value="hour" label="Hour" />
@@ -268,24 +261,15 @@ export default function OverviewPageTemplate({
 
             <CheckListText>Check List</CheckListText>
             <FacilityStructureImgWrapper>
-              <div style={{ position: 'relative' }}>
+              <div>
                 <FacilityStructureImg src={FacilityStructureSrc}></FacilityStructureImg>
 
-                <div
-                  style={{
-                    fontSize: '1rem',
-                    position: 'absolute',
-                    right: '16%',
-                    bottom: '33%',
-                    display: 'flex',
-                    gap: '1rem',
-                    alignItems: 'center',
-                  }}
-                >
-                  <div>ON</div>
-                  <div>OFF</div>
-                </div>
+                <PumpState isOn={rawLevelSwitch} position={rawLevelSwitchPosition} />
+                <PumpState isOn={feedPump} position={feedPumpPosition} />
+                <PumpState isOn={roPump} position={roPumpPosition} />
+                <PumpState isOn={drinkLevelSwitch} position={drinkLevelSwitchPosition} />
               </div>
+
               <Card>
                 <TreatedWaterCardWrapper>
                   <Typography gutterBottom variant="h5" component="div">
@@ -294,7 +278,6 @@ export default function OverviewPageTemplate({
                   <Typography gutterBottom variant="h5" component="div">
                     PH
                   </Typography>
-                  {/* <TreatedWaterCardText></TreatedWaterCardText> */}
                   <TreatedWaterCardText></TreatedWaterCardText>
                 </TreatedWaterCardWrapper>
               </Card>
