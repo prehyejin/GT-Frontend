@@ -18,19 +18,24 @@ const SelectCity = styled.div``;
 
 const Location = styled.h2`
   font-family: Pretendard-Light;
-  font-size: 15px;
+  font-size: 20px;
+  padding-top: 15px;
+  /* padding-left: 3px; */
 
 `;
 
 const City = styled.h2`
   font-family: Pretendard-Light;
-  font-size: 30px;
+  font-size: 50px;
+  font-weight: bolder;
 `;
 
 const Connection = styled.h2`
   font-family: Pretendard-Light;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: bolder;
   color: grey;
+  /* padding-left: 4px; */
 `;
 
 const OffWrapper = styled.h2`
@@ -46,12 +51,18 @@ const OnWrapper = styled.h2`
 const MonitoringText = styled.h2`
   font-family: Pretendard-Light;
   font-size: 40px;
+  font-weight: bold;
   color: Black;
 `;
 
 const ConnectionRow = styled.div`
   display: flex;
 `;
+const ConnectionStatus = styled.div`
+  padding-top: 0.4rem;
+  padding-left: 0.4rem;
+`;
+
 const ReactSpeedometerWrapper = styled.div`
   height: 20vh;
 `;
@@ -77,7 +88,7 @@ const MonitoringWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 1rem;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
 const GaugeChartColumn = styled.div`
@@ -136,6 +147,7 @@ const WaterRateWrapper = styled.div`
 const CheckListText = styled.h2`
   font-family: Pretendard-Light;
   font-size: 40px;
+  font-weight: bold;
   color: Black;
 `;
 
@@ -155,7 +167,7 @@ const LineChartWrapper = styled.div`
 `;
 
 const DayTextPicker = styled.div`
-  padding-top: 1rem;
+  /* padding-top: 1rem; */
   display: flex;
   /* ali */
 `;
@@ -167,7 +179,8 @@ const WaterGraphHeader = styled.div`
 `;
 
 const WaterGraphCardWrapper = styled.div`
-  width: 50vw;
+  width: 55vw;
+  max-width: 800px;
 `;
 
 const OutlineIconWrapper = styled.div`
@@ -226,14 +239,73 @@ justify-content: space-between;
 padding-left: 1rem;
 `;
 const TreatedWaterCardWrapper = styled.div`
-width: 50vw;
+width: 20vw;
+max-width: 200px;
+justify-content: flex-end;
+/* height: 100px; */
 /* height: 100px; */
 
 `;
 
 
-const LocationText = styled.h2``;
-const TreatedWaterCardText = styled.h2``;
+const LocationText = styled.h2`
+font-family: Pretendard-Light;
+`;
+
+
+const TreatedWaterCardText = styled.h2`
+font-family: Pretendard-Light;
+font-size: 20px;
+
+`;
+const TreatedWaterText = styled.h2`
+font-size: 25px;
+font-family: Pretendard-Light;
+font-weight: bold;
+`;
+
+const TreatedCardContents = styled.div`
+padding: 15px;
+width: 20vw;
+height: 130px;
+/* height: 100px; */
+
+`;
+
+const TreatedRow = styled.div`
+display: flex;
+`;
+const TreatedWaterTable = styled.table`
+tr{
+  /* background-color: #c2c2c2; */
+  margin: 0px 20px;
+}
+td{
+  padding: 3px;
+}
+td:nth-child(2){
+  /* color: red; */
+  padding-left:20px;
+}
+/* border: 3px solid purple; */
+  padding: 10px;
+  color: #444444;
+  font-family: Pretendard-Light;
+  
+
+/* height: 100px; */
+
+`;
+// const LeftAlignWrapper = styled.div`
+// /* justify-content: flex-end; */
+// /* height: 100px; */
+
+// `;
+
+
+
+
+
 
 export {
     Contents,
@@ -247,6 +319,7 @@ export {
     OnWrapper,
     MonitoringText,
     ConnectionRow,
+    ConnectionStatus,
     ReactSpeedometerWrapper,
     FlowRateText,
     FlowRateValue,
@@ -278,4 +351,9 @@ export {
     TreatedWaterCardText,
     DatePickerWrapper,
     DatePickerContainer,
+    TreatedWaterText,
+    TreatedCardContents,
+    TreatedWaterTable,
+    TreatedRow
+    // LeftAlignWrapper
 }

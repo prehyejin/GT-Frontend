@@ -33,4 +33,5 @@ const PumpState = ({ isOn, position }) => {
     </PumpStateContainer>
   );
 };
+
 export default PumpState;

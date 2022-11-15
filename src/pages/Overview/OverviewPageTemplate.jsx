@@ -12,12 +12,15 @@ import {
   SelectItem,
   CalendarButton,
   PumpState,
+  CircularGauge as CircularGaugeChart,
 } from '../../component/Overview';
 
 import useFetch from '../../hooks/useFetch';
 
 import FacilityStructureSrc from '../../img/FacilityStructure.png';
 import WaterLogoSrc from '../../img/Water_1.png';
+import onIcon from '../../img/On.png';
+import offIcon from '../../img/Off.png';
 
 import {
   initDistrictsWithCities,
@@ -34,6 +37,7 @@ import {
   Location,
   City,
   Connection,
+  ConnectionStatus,
   OffWrapper,
   OnWrapper,
   MonitoringText,
@@ -62,6 +66,11 @@ import {
   LocationText,
   TreatedWaterCardWrapper,
   TreatedWaterCardText,
+  TreatedWaterText,
+  TreatedCardContents,
+  TreatedWaterTable,
+  TreatedRow,
+  // LeftAlignWrapper,
 } from './OverviewPage.style';
 
 const GagueChartComponent = ({ chartData, imageSrc, rateData }) => {
@@ -134,6 +143,8 @@ export default function OverviewPageTemplate({
     closeCalendar();
   };
 
+  const [connectionState, setConnectionState] = useState(true);
+
   const [rawLevelSwitch, setRawLevelSwitch] = useState(true);
   const [feedPump, setFeedPump] = useState(false);
   const [roPump, setRopump] = useState(true);
@@ -180,7 +191,17 @@ export default function OverviewPageTemplate({
                 <City> {selectedFacility.name} </City>
                 <ConnectionRow>
                   <Connection> Connection </Connection>
-                  <ConnectionIconWrapper>
+                  {/* <PumpState isOn={rawLevelSwitch} /> */}
+
+                  <ConnectionStatus>
+                    {connectionState ? (
+                      <img src={onIcon} alt="on" height={19} />
+                    ) : (
+                      <img src={offIcon} alt="off" height={19} />
+                    )}
+                  </ConnectionStatus>
+
+                  {/* <ConnectionIconWrapper>
                     <FaCircle color="springgreen"></FaCircle>
                   </ConnectionIconWrapper>
 
@@ -188,9 +209,8 @@ export default function OverviewPageTemplate({
                   <ConnectionIconWrapper>
                     <FaCircle color="red"></FaCircle>
                   </ConnectionIconWrapper>
-                  <OffWrapper> Off</OffWrapper>
+                  <OffWrapper> Off</OffWrapper> */}
                 </ConnectionRow>
-                <MonitoringText>Monitoring</MonitoringText>
               </ConnectionHeaderWrapper>
               <MapWrapper>
                 <GoogleMap data={selectedFacility.location}></GoogleMap>
@@ -201,6 +221,7 @@ export default function OverviewPageTemplate({
             </TopWrapper>
 
             <hr />
+            <MonitoringText>Monitoring</MonitoringText>
             <MonitoringWrapper>
               <GaugeChartColumn>
                 <GagueChartComponent
@@ -208,6 +229,7 @@ export default function OverviewPageTemplate({
                   rateData={con_water_rate}
                   imageSrc={WaterLogoSrc}
                 />
+                {/* <CircularGaugeChart></CircularGaugeChart> */}
                 <GagueChartComponent
                   chartData={treated_water_rate}
                   rateData={treated_water_rate}
@@ -219,8 +241,6 @@ export default function OverviewPageTemplate({
                   <Tabs
                     value={timeunit}
                     onChange={handleChange}
-                    color="rgba(255, 178, 217, 0.85)"
-                    textColor="rgba(255, 178, 217, 0.85)"
                     indicatorColor="primary"
                     aria-label="secondary tabs example"
                   >
@@ -271,17 +291,25 @@ export default function OverviewPageTemplate({
                 <PumpState isOn={drinkLevelSwitch} position={drinkLevelSwitchPosition} />
               </div>
 
-              <Card>
-                <TreatedWaterCardWrapper>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Conductivity
-                  </Typography>
-                  <Typography gutterBottom variant="h5" component="div">
-                    PH
-                  </Typography>
-                  <TreatedWaterCardText></TreatedWaterCardText>
-                </TreatedWaterCardWrapper>
-              </Card>
+              <TreatedWaterCardWrapper>
+                <Card elevation={3}>
+                  <TreatedCardContents>
+                    <TreatedWaterText>Treated Water</TreatedWaterText>
+                    <TreatedWaterTable>
+                      <tr>
+                        <td>Conductivity</td>
+                        <td>0000</td>
+                      </tr>
+                      <tr>
+                        <td>PH</td>
+                        <td>0000</td>
+                      </tr>
+                    </TreatedWaterTable>
+                  </TreatedCardContents>
+                </Card>
+              </TreatedWaterCardWrapper>
+
+              {/* </LeftAlignWrapper> */}
             </FacilityStructureImgWrapper>
           </>
         )}

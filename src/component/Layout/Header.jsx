@@ -38,11 +38,11 @@ export default function Header() {
   return (
     <Container>
       <MenuWrapper>
-        <Link to="/overview" style={{ textDecoration: 'none' }}>
-          <Text> Overview</Text>
-        </Link>
         <Link to="/" style={{ textDecoration: 'none' }}>
           <Text> List</Text>
+        </Link>
+        <Link to="/overview" style={{ textDecoration: 'none' }}>
+          <Text> Overview</Text>
         </Link>
         <Link to="/cctv" style={{ textDecoration: 'none' }}>
           <Text> CCTV</Text>
