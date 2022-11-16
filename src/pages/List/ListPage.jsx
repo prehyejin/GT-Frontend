@@ -1,16 +1,21 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import SelectDistrict from '../../component/Overview/SelectList';
+import useFetch from '../../hooks/useFetch';
+// import SelectDistrict from '../../component/Overview/SelectList';
 import FailityCard from '../../component/List/ListCard';
 import Header from '../../component/Layout/Header';
 
+import { SelectItem } from '../../component/Overview';
+import { initDistrictsWithCities } from '../../constants/district';
 const ListFullWrapper = styled.div`
   width: 100%;
   padding: 1.25rem;
+  max-width: 1280px;
+  margin: 0 auto;
 `;
 
-const SelectLocation = styled.div`
+const SelectWrapper = styled.div`
   width: 100px;
   margin-bottom: 0.125rem;
 `;
@@ -29,6 +34,7 @@ const FacilityCardList = styled.div`
 const FacilityCardWrapper = styled(Link)`
   display: flex;
   width: 30%;
+  max-width: 370px;
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 0 6px 4px #00000020;
@@ -78,16 +84,62 @@ const districtList = [
   },
 ];
 
-export default function ListPage() {
+const SelectRow = styled.div`
+  height: 70px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 10px;
+`;
+
+const SelectLocation = styled.div``;
+
+const SelectCity = styled.div``;
+
+export default function ListPage({ districtId, changeDistrict, facilityId, changeFacility }) {
   // const cardList = ['043_Kesra', '044_Tegharia', '045_potepur', '046_Sreemonta', '047_Kanaidia'];
+  const { data: districts } = useFetch('/districts');
+
+  const selectedDistrict = districts?.find((_district) => _district.id === districtId);
+  const facilities = selectedDistrict?.facilities ?? [];
+  const selectedFacility = facilities.find(({ id }) => id === facilityId);
   return (
     <>
       <Header />
       <ListFullWrapper>
-        <SelectLocation>
+        <SelectRow>
+          <SelectWrapper>
+            <SelectItem
+              label="구역"
+              onChangeSelected={({ target: { value /* district.id */ } }) => {
+                changeDistrict(value);
+                changeFacility(null);
+              }}
+              selected={selectedDistrict ? selectedDistrict.id : ''}
+              items={districts}
+              itemKey="name"
+              keyProperty="id"
+            />
+          </SelectWrapper>
+          {selectedDistrict && (
+            <SelectCity>
+              <SelectItem
+                label="도시"
+                onChangeSelected={({ target: { value /* city.id */ } }) => {
+                  changeFacility(value);
+                }}
+                selected={selectedFacility ? selectedFacility.id : ''}
+                items={facilities}
+                itemKey="name"
+                keyProperty="id"
+              />
+            </SelectCity>
+          )}
+        </SelectRow>
+        {/* <SelectLocation>
           <SelectDistrict data={districtList} />
-        </SelectLocation>
-        <LoactionText>CPA 001</LoactionText>
+        </SelectLocation> */}
+        <LoactionText>{}</LoactionText>
         <FacilityCardList>
           {facilityList.map((facility) => (
             <FacilityCardWrapper

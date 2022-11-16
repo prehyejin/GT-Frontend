@@ -1,16 +1,23 @@
 import {useState, useEffect} from 'react';
-import {fetcher} from '../api/fetcher';
+import request from '../api/fetcher';
 
-export default function useFetch(initData, delay = 1500) {
-    const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState();
-  
+export default function useFetch(path) {
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState(null);
+
     useEffect(() => {
-      fetcher(initData, delay).then((response) => {
-        setData(response);
+      request(path).then((response)=>{
+        setData(response.data);
         setIsLoading(false);
+        setIsError(false);
+        setError(null);
+      }).catch((error)=>{
+        setIsError(true)
+        setError(error);
       });
-    }, [initData]);
+    }, [path]);
     
-    return { data, setData, isLoading };
+    return { data, isLoading , isError, error };
   }

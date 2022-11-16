@@ -25,13 +25,13 @@ const GoogleMap = ({ data }) => {
         defaultZoom={10}
       ></GoogleMapReact> */}
       <iframe
-        width="500"
-        height="130"
-        frameborder="0"
+        width={500}
+        height={130}
+        frameborder={0}
         // style="border:0"
-        referrerpolicy="no-referrer-when-downgrade"
+        refererpolicy="no-referrer-when-downgrade"
         src={url}
-        allowfullscreen
+        allowFullScreen
       ></iframe>
     </div>
   );

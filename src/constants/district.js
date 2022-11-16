@@ -1,8 +1,11 @@
+import { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
 export const locationData = {
   lat: 22.750620,
   lon: 88.947730
 }
 
+// export const initDistrictList = districtList
 export const initDistrictsWithCities = [
     {
       id: 1,

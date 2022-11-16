@@ -29,6 +29,8 @@ import {
 } from '../../constants/district';
 import * as waterstream from '../../constants/waterstream';
 
+import axios from 'axios';
+
 import {
   Contents,
   SelectRow,
@@ -107,7 +109,7 @@ export default function OverviewPageTemplate({
   facilityId,
   changeFacility,
 }) {
-  const { data: districts } = useFetch(initDistrictsWithCities, 300);
+  const { data: districts } = useFetch('/districts');
 
   const selectedDistrict = districts?.find((_district) => _district.id === districtId);
   const facilities = selectedDistrict?.facilities ?? [];

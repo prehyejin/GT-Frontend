@@ -3,6 +3,7 @@ import React from 'react'
 import { Reset } from 'styled-reset'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
+
 import routes from './routes';
 import GlobalStyle from './GlobalStyle';
 
