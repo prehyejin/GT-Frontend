@@ -22,11 +22,7 @@ import WaterLogoSrc from '../../img/Water_1.png';
 import onIcon from '../../img/On.png';
 import offIcon from '../../img/Off.png';
 
-import {
-  initDistrictsWithCities,
-  con_water_rate,
-  treated_water_rate,
-} from '../../constants/district';
+import { con_water_rate, treated_water_rate } from '../../constants/district';
 import * as waterstream from '../../constants/waterstream';
 
 import axios from 'axios';
@@ -110,6 +106,15 @@ export default function OverviewPageTemplate({
   changeFacility,
 }) {
   const { data: districts } = useFetch('/districts');
+  const {
+    data: overview,
+    isLoading: overviewLoading,
+    isError: overviewError,
+    error: overviewErr,
+  } = useFetch('/allAboutFacility');
+  if (!overviewLoading) {
+    console.log('overview:', overviewLoading, overview, overviewError, overviewErr);
+  }
 
   const selectedDistrict = districts?.find((_district) => _district.id === districtId);
   const facilities = selectedDistrict?.facilities ?? [];
@@ -185,18 +190,18 @@ export default function OverviewPageTemplate({
           )}
         </SelectRow>
 
-        {selectedFacility && selectedFacility?.id && (
+        {overview && overview?.facilityId && (
           <>
             <TopWrapper>
               <ConnectionHeaderWrapper>
-                {selectedDistrict && <Location> {selectedDistrict.name}</Location>}
-                <City> {selectedFacility.name} </City>
+                {overview && <Location> {overview.districtName}</Location>}
+                <City> {overview.facilityName} </City>
                 <ConnectionRow>
                   <Connection> Connection </Connection>
                   {/* <PumpState isOn={rawLevelSwitch} /> */}
 
                   <ConnectionStatus>
-                    {connectionState ? (
+                    {overview?.connection ? (
                       <img src={onIcon} alt="on" height={19} />
                     ) : (
                       <img src={offIcon} alt="off" height={19} />
@@ -215,9 +220,9 @@ export default function OverviewPageTemplate({
                 </ConnectionRow>
               </ConnectionHeaderWrapper>
               <MapWrapper>
-                <GoogleMap data={selectedFacility.location}></GoogleMap>
+                <GoogleMap data={overview.location}></GoogleMap>
                 <LocationText>
-                  위도: {selectedFacility.location.lat} / 경도: {selectedFacility.location.lon}
+                  위도: {overview.location.lat} / 경도: {overview.location.lon}
                 </LocationText>
               </MapWrapper>
             </TopWrapper>
@@ -227,21 +232,21 @@ export default function OverviewPageTemplate({
             <MonitoringWrapper>
               <GaugeChartColumn>
                 <GagueChartComponent
-                  chartData={con_water_rate}
-                  rateData={con_water_rate}
+                  chartData={overview.concentratedFlowRate}
+                  rateData={overview.concentratedFlowRate}
                   imageSrc={WaterLogoSrc}
                 />
                 {/* <CircularGaugeChart></CircularGaugeChart> */}
                 <GagueChartComponent
-                  chartData={treated_water_rate}
-                  rateData={treated_water_rate}
+                  chartData={overview.treatedFlowRate}
+                  rateData={overview.treatedFlowRate}
                   imageSrc={WaterLogoSrc}
                 />
               </GaugeChartColumn>
               <WaterGraphContainer>
                 <WaterGraphHeader>
                   <Tabs
-                    value={timeunit}
+                    value={overview.waterGraphData.timeunit}
                     onChange={handleChange}
                     indicatorColor="primary"
                     aria-label="secondary tabs example"
@@ -287,10 +292,10 @@ export default function OverviewPageTemplate({
               <div>
                 <FacilityStructureImg src={FacilityStructureSrc}></FacilityStructureImg>
 
-                <PumpState isOn={rawLevelSwitch} position={rawLevelSwitchPosition} />
-                <PumpState isOn={feedPump} position={feedPumpPosition} />
-                <PumpState isOn={roPump} position={roPumpPosition} />
-                <PumpState isOn={drinkLevelSwitch} position={drinkLevelSwitchPosition} />
+                <PumpState isOn={overview.rawLevelSwitch} position={rawLevelSwitchPosition} />
+                <PumpState isOn={overview.feedPump} position={feedPumpPosition} />
+                <PumpState isOn={overview.roPump} position={roPumpPosition} />
+                <PumpState isOn={overview.drinkLevelSwitch} position={drinkLevelSwitchPosition} />
               </div>
 
               <TreatedWaterCardWrapper>
@@ -300,11 +305,11 @@ export default function OverviewPageTemplate({
                     <TreatedWaterTable>
                       <tr>
                         <td>Conductivity</td>
-                        <td>0000</td>
+                        <td>{overview.treatedWaterConductivity}</td>
                       </tr>
                       <tr>
                         <td>PH</td>
-                        <td>0000</td>
+                        <td>{overview.treatedWaterPH}</td>
                       </tr>
                     </TreatedWaterTable>
                   </TreatedCardContents>
