@@ -112,9 +112,12 @@ export default function OverviewPageTemplate({
     isError: overviewError,
     error: overviewErr,
   } = useFetch('/allAboutFacility');
+
   if (!overviewLoading) {
     console.log('overview:', overviewLoading, overview, overviewError, overviewErr);
   }
+
+  const [deviceId, setDeviceId] = useState();
 
   const selectedDistrict = districts?.find((_district) => _district.id === districtId);
   const facilities = selectedDistrict?.facilities ?? [];
@@ -156,7 +159,15 @@ export default function OverviewPageTemplate({
   const [feedPump, setFeedPump] = useState(false);
   const [roPump, setRopump] = useState(true);
   const [drinkLevelSwitch, setDrinkLevelSwitch] = useState(false);
-
+  const { data: waterGraph } = useFetch(`/waterGraph`, {
+    method: 'GET',
+    headers: {},
+    body: JSON.stringify({
+      deviceId: facilityId,
+      timeUnit: timeunit,
+      time: timeText,
+    }),
+  });
   return (
     <Contents>
       <OverviewWrapper>

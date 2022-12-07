@@ -21,7 +21,6 @@ const Location = styled.h2`
   font-size: 20px;
   padding-top: 15px;
   /* padding-left: 3px; */
-
 `;
 
 const City = styled.h2`
@@ -122,10 +121,10 @@ const FacilityStructureImgWrapper = styled.div`
   width: 100%;
   padding: 0.5rem;
   display: flex;
-  flex-direction:column;
-  position:relative;
-  & > div{
-    position:relative;
+  flex-direction: column;
+  position: relative;
+  & > div {
+    position: relative;
   }
 `;
 const FacilityStructureImg = styled.img`
@@ -141,7 +140,6 @@ const FlowRateWrapper = styled.div`
 const WaterRateWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
-  margin-top: -1rem;
 `;
 
 const CheckListText = styled.h2`
@@ -187,8 +185,8 @@ const OutlineIconWrapper = styled.div`
   &:hover {
     color: blue;
   }
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
 `;
 
 const CurrentSelectedTimeText = styled.button`
@@ -206,27 +204,26 @@ const CurrentSelectedTimeText = styled.button`
 `;
 
 const DatePickerWrapper = styled.div`
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 const DatePickerContainer = styled.div`
-  position:absolute;
+  position: absolute;
   top: 45px;
   right: -20px;
-  z-index:1;
-  width:210px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  
-  .custom-calendar{
-    width:100%;
-    display:flex;
+  z-index: 1;
+  width: 210px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .custom-calendar {
+    width: 100%;
+    display: flex;
   }
 `;
-
 
 const WaterGraphContainer = styled.div``;
 
@@ -234,67 +231,60 @@ const ConnectionHeaderWrapper = styled.div``;
 
 const MapWrapper = styled.div``;
 const TopWrapper = styled.div`
-display: flex;
-justify-content: space-between;
-padding-left: 1rem;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 1rem;
 `;
 const TreatedWaterCardWrapper = styled.div`
-width: 20vw;
-max-width: 200px;
-justify-content: flex-end;
-/* height: 100px; */
-/* height: 100px; */
-
+  width: 20vw;
+  max-width: 200px;
+  justify-content: flex-end;
+  /* height: 100px; */
+  /* height: 100px; */
 `;
-
 
 const LocationText = styled.h2`
-font-family: Pretendard-Light;
+  font-family: Pretendard-Light;
 `;
-
 
 const TreatedWaterCardText = styled.h2`
-font-family: Pretendard-Light;
-font-size: 20px;
-
+  font-family: Pretendard-Light;
+  font-size: 20px;
 `;
 const TreatedWaterText = styled.h2`
-font-size: 25px;
-font-family: Pretendard-Light;
-font-weight: bold;
+  font-size: 25px;
+  font-family: Pretendard-Light;
+  font-weight: bold;
 `;
 
 const TreatedCardContents = styled.div`
-padding: 15px;
-width: 20vw;
-height: 130px;
-/* height: 100px; */
-
+  padding: 15px;
+  width: 20vw;
+  height: 130px;
+  /* height: 100px; */
 `;
 
 const TreatedRow = styled.div`
-display: flex;
+  display: flex;
 `;
 const TreatedWaterTable = styled.table`
-tr{
-  /* background-color: #c2c2c2; */
-  margin: 0px 20px;
-}
-td{
-  padding: 3px;
-}
-td:nth-child(2){
-  /* color: red; */
-  padding-left:20px;
-}
-/* border: 3px solid purple; */
+  tr {
+    /* background-color: #c2c2c2; */
+    margin: 0px 20px;
+  }
+  td {
+    padding: 3px;
+  }
+  td:nth-child(2) {
+    /* color: red; */
+    padding-left: 20px;
+  }
+  /* border: 3px solid purple; */
   padding: 10px;
   color: #444444;
   font-family: Pretendard-Light;
-  
 
-/* height: 100px; */
-
+  /* height: 100px; */
 `;
 // const LeftAlignWrapper = styled.div`
 // /* justify-content: flex-end; */
@@ -302,58 +292,53 @@ td:nth-child(2){
 
 // `;
 
-
-
-
-
-
 export {
-    Contents,
-    SelectRow,
-    SelectLocation,
-    SelectCity,
-    Location,
-    City,
-    Connection,
-    OffWrapper,
-    OnWrapper,
-    MonitoringText,
-    ConnectionRow,
-    ConnectionStatus,
-    ReactSpeedometerWrapper,
-    FlowRateText,
-    FlowRateValue,
-    WaterGraphWrapper,
-    MonitoringWrapper,
-    GaugeChartColumn,
-    GaugeChartWrapper,
-    OverviewWrapper,
-    WaterLogo,
-    FacilityStructureImgWrapper,
-    FacilityStructureImg,
-    FlowRateWrapper,
-    WaterRateWrapper,
-    CheckListText,
-    FontWrapper,
-    ConnectionIconWrapper,
-    LineChartWrapper,
-    DayTextPicker,
-    WaterGraphHeader,
-    WaterGraphCardWrapper,
-    OutlineIconWrapper,
-    CurrentSelectedTimeText,
-    WaterGraphContainer,
-    MapWrapper,
-    ConnectionHeaderWrapper,
-    TopWrapper,
-    LocationText,
-    TreatedWaterCardWrapper,
-    TreatedWaterCardText,
-    DatePickerWrapper,
-    DatePickerContainer,
-    TreatedWaterText,
-    TreatedCardContents,
-    TreatedWaterTable,
-    TreatedRow
-    // LeftAlignWrapper
-}
+  Contents,
+  SelectRow,
+  SelectLocation,
+  SelectCity,
+  Location,
+  City,
+  Connection,
+  OffWrapper,
+  OnWrapper,
+  MonitoringText,
+  ConnectionRow,
+  ConnectionStatus,
+  ReactSpeedometerWrapper,
+  FlowRateText,
+  FlowRateValue,
+  WaterGraphWrapper,
+  MonitoringWrapper,
+  GaugeChartColumn,
+  GaugeChartWrapper,
+  OverviewWrapper,
+  WaterLogo,
+  FacilityStructureImgWrapper,
+  FacilityStructureImg,
+  FlowRateWrapper,
+  WaterRateWrapper,
+  CheckListText,
+  FontWrapper,
+  ConnectionIconWrapper,
+  LineChartWrapper,
+  DayTextPicker,
+  WaterGraphHeader,
+  WaterGraphCardWrapper,
+  OutlineIconWrapper,
+  CurrentSelectedTimeText,
+  WaterGraphContainer,
+  MapWrapper,
+  ConnectionHeaderWrapper,
+  TopWrapper,
+  LocationText,
+  TreatedWaterCardWrapper,
+  TreatedWaterCardText,
+  DatePickerWrapper,
+  DatePickerContainer,
+  TreatedWaterText,
+  TreatedCardContents,
+  TreatedWaterTable,
+  TreatedRow,
+  // LeftAlignWrapper
+};
