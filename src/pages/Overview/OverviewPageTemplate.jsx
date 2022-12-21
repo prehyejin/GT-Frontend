@@ -107,7 +107,6 @@ export default function OverviewPageTemplate({
   changeFacility,
 }) {
   const { data: districts } = useFetch('/api/v1/status');
-
   const [deviceId, setDeviceId] = useState();
 
   const selectedDistrict = districts?.find((_district) => _district.id === districtId);
