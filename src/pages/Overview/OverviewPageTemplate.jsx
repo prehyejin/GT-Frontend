@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs';
 import { FaCircle } from 'react-icons/fa';
 import GaugeChart from 'react-gauge-chart';
@@ -106,38 +107,41 @@ export default function OverviewPageTemplate({
   changeFacility,
 }) {
   const { data: districts } = useFetch('/districts');
-  const {
-    data: overview,
-    isLoading: overviewLoading,
-    isError: overviewError,
-    error: overviewErr,
-  } = useFetch('/allAboutFacility');
 
-  if (!overviewLoading) {
-    console.log('overview:', overviewLoading, overview, overviewError, overviewErr);
-  }
-
+  
   const [deviceId, setDeviceId] = useState();
-
+  
   const selectedDistrict = districts?.find((_district) => _district.id === districtId);
   const facilities = selectedDistrict?.facilities ?? [];
+  console.log('selectedDistrict', selectedDistrict);
+  console.log('도시 목록', facilities);
   const selectedFacility = facilities.find(
     ({ id }) => id === facilityId,
-  ); /** facility : { id: 4, name: 'Tokyo' } */ // facility | undefined
-
+    ); /** facility : { id: 4, name: 'Tokyo' } */ // facility | undefined
+  
+  const [timeunit, setTimeunit] = useState('hour'); /** hour | day | month */
   const [day, setDay] = useState(new Date());
-
-  const [timeunit, setTimeunit] = useState('hour');
-
-  const handleChange = (event, newTimeunit) => {
-    setTimeunit(newTimeunit);
-  };
-
   const timeText = {
     hour: dayjs(day).format('YYYY-MM-DD'),
     day: dayjs(day).format('YYYY-MM'),
     month: dayjs(day).format('YYYY'),
   };
+
+  const { data: overview, isLoading: overviewLoading } = useQuery(['facilityId', selectedFacility?.id, timeunit, timeText[timeunit]], async ()=>{
+    const baseUrl = 'http://localhost:3001';
+    const queries = `facilityId=${selectedFacility.id}&timeunit=${timeunit}&time=${timeText[timeunit]}`;
+    const { data } = await axios.get(baseUrl + `/allAboutFacility?${queries}`);
+    return data;
+  },{
+    enabled: !!selectedFacility?.id,
+  });
+  console.log('facility overview',overview);
+
+
+  const handleChange = (event, newTimeunit) => {
+    setTimeunit(newTimeunit);
+  };
+
 
   const [calendarOpened, setCalendarOpened] = useState(false);
 
@@ -159,15 +163,15 @@ export default function OverviewPageTemplate({
   const [feedPump, setFeedPump] = useState(false);
   const [roPump, setRopump] = useState(true);
   const [drinkLevelSwitch, setDrinkLevelSwitch] = useState(false);
-  const { data: waterGraph } = useFetch(`/waterGraph`, {
-    method: 'GET',
-    headers: {},
-    body: JSON.stringify({
-      deviceId: facilityId,
-      timeUnit: timeunit,
-      time: timeText,
-    }),
-  });
+  // const { data: waterGraph } = useFetch(`/waterGraph`, {
+  //   method: 'GET',
+  //   headers: {},
+  //   body: JSON.stringify({
+  //     deviceId: facilityId,
+  //     timeUnit: timeunit,
+  //     time: timeText,
+  //   }),
+  // });
   return (
     <Contents>
       <OverviewWrapper>
@@ -188,7 +192,7 @@ export default function OverviewPageTemplate({
           {selectedDistrict && (
             <SelectCity>
               <SelectItem
-                label="도시"
+                label="장비"
                 onChangeSelected={({ target: { value /* city.id */ } }) => {
                   changeFacility(value);
                 }}
@@ -205,14 +209,13 @@ export default function OverviewPageTemplate({
           <>
             <TopWrapper>
               <ConnectionHeaderWrapper>
-                {overview && <Location> {overview.districtName}</Location>}
+                <Location> {selectedDistrict.name}</Location>
                 <City> {overview.facilityName} </City>
                 <ConnectionRow>
                   <Connection> Connection </Connection>
                   {/* <PumpState isOn={rawLevelSwitch} /> */}
-
                   <ConnectionStatus>
-                    {overview?.connection ? (
+                    {overview.connection ? (
                       <img src={onIcon} alt="on" height={19} />
                     ) : (
                       <img src={offIcon} alt="off" height={19} />
@@ -243,14 +246,14 @@ export default function OverviewPageTemplate({
             <MonitoringWrapper>
               <GaugeChartColumn>
                 <GagueChartComponent
-                  chartData={overview.concentratedFlowRate}
-                  rateData={overview.concentratedFlowRate}
+                  chartData={overview?.concentratedFlowRate}
+                  rateData={overview?.concentratedFlowRate}
                   imageSrc={WaterLogoSrc}
                 />
                 {/* <CircularGaugeChart></CircularGaugeChart> */}
                 <GagueChartComponent
-                  chartData={overview.treatedFlowRate}
-                  rateData={overview.treatedFlowRate}
+                  chartData={overview?.treatedFlowRate}
+                  rateData={overview?.treatedFlowRate}
                   imageSrc={WaterLogoSrc}
                 />
               </GaugeChartColumn>

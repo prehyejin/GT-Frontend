@@ -23,27 +23,28 @@ export default function SelectBox({
   items,
   itemKey,
 }) {
+  console.log('select box', items);
   return (
     <Container>
       <FormControl fullWidth>
         <InputLabel size="small">
           <FontWrapper>{label}</FontWrapper>
         </InputLabel>
-        <Select
+       {Array.isArray(items) &&
+            items.length > 0 && <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={selected}
           label="Facility"
           onChange={onChangeSelected}
         >
-          {Array.isArray(items) &&
-            items.length > 0 &&
+          {
             items.map((item) => (
               <MenuItem value={item[keyProperty]} key={item[keyProperty]}>
                 <FontWrapper>{item[itemKey]}</FontWrapper>
               </MenuItem>
             ))}
-        </Select>
+        </Select>}
       </FormControl>
     </Container>
   );
