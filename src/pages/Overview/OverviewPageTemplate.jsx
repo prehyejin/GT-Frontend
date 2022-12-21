@@ -72,7 +72,7 @@ import {
   // LeftAlignWrapper,
 } from './OverviewPage.style';
 
-const GagueChartComponent = ({ chartData, imageSrc, rateData }) => {
+const GagueChartComponent = ({ chartData, imageSrc, rateData, text }) => {
   return (
     <GaugeChartWrapper>
       {/* <GaugeChart id="gauge-chart1" /> */}
@@ -82,7 +82,7 @@ const GagueChartComponent = ({ chartData, imageSrc, rateData }) => {
       <WaterRateWrapper>
         <WaterLogo src={imageSrc} height={'1.6rem'} />
         <FlowRateWrapper>
-          <FlowRateText>처리수 순간 유량</FlowRateText>
+          <FlowRateText>{text}</FlowRateText>
           <FlowRateValue>{rateData}LPM</FlowRateValue>
         </FlowRateWrapper>
       </WaterRateWrapper>
@@ -107,6 +107,16 @@ export default function OverviewPageTemplate({
   changeFacility,
 }) {
   const { data: districts } = useFetch('/api/v1/status');
+  const { data: waterStreamHour } = useFetch('/waterGraphHour');
+
+  const { data: waterStreamDay } = useFetch('/waterGraphDay');
+  console.log('waterStreamDay', waterStreamDay);
+  // console.log('waterStreamDay["data"]', waterStreamDay['data']);
+  // console.log('waterStreamDay.data', waterStreamDay.data);
+  const { data: waterStreamMonth } = useFetch('/waterGraphMonth');
+
+  const [waterGraph, setWaterGraph] = useState();
+
   const [deviceId, setDeviceId] = useState();
 
   const selectedDistrict = districts?.find((_district) => _district.id === districtId);
@@ -125,6 +135,21 @@ export default function OverviewPageTemplate({
     month: dayjs(day).format('YYYY'),
   };
 
+  // const { data: waterStream, isLoading: waterStreamLoading } = useQuery(
+  //   ['facilityId', selectedFacility?.id, timeunit, timeText[timeunit]],
+  //   async () => {
+  //     const baseUrl = 'http://localhost:3001';
+  //     const queries = `facilityId=${selectedFacility.id}&timeunit=${timeunit}&time=${timeText[timeunit]}`;
+  //     const { data } = await axios.get(baseUrl + `/waterGraph?${queries}`);
+  //     return data;
+  //   },
+
+  //   {
+  //     enabled: !!selectedFacility?.id,
+  //     cacheTime: 0,
+  //   },
+  // );
+
   const { data: overview, isLoading: overviewLoading } = useQuery(
     ['facilityId', selectedFacility?.id, timeunit, timeText[timeunit]],
     async () => {
@@ -133,10 +158,13 @@ export default function OverviewPageTemplate({
       const { data } = await axios.get(baseUrl + `/allAboutFacility?${queries}`);
       return data;
     },
+
     {
       enabled: !!selectedFacility?.id,
+      cacheTime: 0,
     },
   );
+
   console.log('facility overview', overview);
 
   const handleChange = (event, newTimeunit) => {
@@ -249,12 +277,14 @@ export default function OverviewPageTemplate({
                   chartData={overview?.concentratedFlowRate}
                   rateData={overview?.concentratedFlowRate}
                   imageSrc={WaterLogoSrc}
+                  text={'농축수 순간 유량'}
                 />
                 {/* <CircularGaugeChart></CircularGaugeChart> */}
                 <GagueChartComponent
                   chartData={overview?.treatedFlowRate}
                   rateData={overview?.treatedFlowRate}
                   imageSrc={WaterLogoSrc}
+                  text={'처리수 순간 유량'}
                 />
               </GaugeChartColumn>
               <WaterGraphContainer>
@@ -289,9 +319,11 @@ export default function OverviewPageTemplate({
                   <Card>
                     <LineChartWrapper>
                       {timeunit === 'hour' ? (
-                        <LineChart data={waterstream[timeunit]}></LineChart>
+                        <LineChart data={waterStreamHour}></LineChart>
+                      ) : timeunit === 'day' ? (
+                        <BarChart data={waterStreamDay}></BarChart>
                       ) : (
-                        <BarChart data={waterstream[timeunit]}></BarChart>
+                        <BarChart data={waterStreamMonth}></BarChart>
                       )}
                     </LineChartWrapper>
                   </Card>

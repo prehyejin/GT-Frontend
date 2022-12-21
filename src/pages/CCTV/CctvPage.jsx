@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import Header from '../../component/Layout/Header';
 import Footer from '../../component/Layout/Footer';
-import GoogleMap from '../../component/Overview/GoogleMap';
 import ReactPlayer from 'react-player/lazy';
 
 const ContentContainer = styled.div`
@@ -30,7 +29,7 @@ export default function CctvPage() {
       <ContentContainer>
         <DistrictInfoWrapper>
           <select>
-            <option>CPA 005</option>
+            <option>CPA 001</option>
           </select>
         </DistrictInfoWrapper>
 
@@ -39,7 +38,7 @@ export default function CctvPage() {
           .map((idx) => (
             <VideoContainer key={idx}>
               <ReactPlayer
-                url="video/Camera1_15m.mp4"
+                url="../../../public/Camera2_15m.mp4"
                 controls
                 progressInterval={1000}
                 width="600px"

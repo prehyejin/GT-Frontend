@@ -46,16 +46,16 @@ export default function FailityCard({ data /* see data tab */ }) {
           <TextWrapper>
             <div>
               <Typography variant="body2" color="text.secondary">
-                농축수 순간 유량(LPM) 0
+                농축수 순간 유량(LPM) {data.concentrated_rate}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                처리수 순간 유량(LPM) 10
+                처리수 순간 유량(LPM) {data.treated_rate}
               </Typography>
             </div>
             <CumProductionWrapper>
               <WaterLogo src={WaterLogoSrc}></WaterLogo>
               <Typography variant="body1" color="text.secondary" marginTop={'5px'}>
-                현 누적 식수 생산량 7.2 ton
+                현 누적 식수 생산량 {data.cumulative_water_output} ton
               </Typography>
             </CumProductionWrapper>
           </TextWrapper>

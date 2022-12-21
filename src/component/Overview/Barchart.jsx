@@ -2,6 +2,7 @@ import { ResponsiveBar } from '@nivo/bar';
 import { linearGradientDef } from '@nivo/core';
 import { Stream } from '@nivo/stream';
 const BarChart = ({ data }) => {
+  console.log('bar data', data);
   return (
     <ResponsiveBar
       data={data}
