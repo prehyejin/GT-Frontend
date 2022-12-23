@@ -23,8 +23,6 @@ import WaterLogoSrc from '../../img/Water_1.png';
 import onIcon from '../../img/On.png';
 import offIcon from '../../img/Off.png';
 
-import { con_water_rate, treated_water_rate } from '../../constants/district';
-import * as waterstream from '../../constants/waterstream';
 
 import axios from 'axios';
 
@@ -37,8 +35,6 @@ import {
   City,
   Connection,
   ConnectionStatus,
-  OffWrapper,
-  OnWrapper,
   MonitoringText,
   ConnectionRow,
   ReactSpeedometerWrapper,
@@ -54,7 +50,6 @@ import {
   FlowRateWrapper,
   WaterRateWrapper,
   CheckListText,
-  ConnectionIconWrapper,
   LineChartWrapper,
   WaterGraphHeader,
   WaterGraphCardWrapper,
@@ -64,18 +59,15 @@ import {
   TopWrapper,
   LocationText,
   TreatedWaterCardWrapper,
-  TreatedWaterCardText,
   TreatedWaterText,
   TreatedCardContents,
   TreatedWaterTable,
-  TreatedRow,
   // LeftAlignWrapper,
 } from './OverviewPage.style';
 
 const GagueChartComponent = ({ chartData, imageSrc, rateData, text }) => {
   return (
     <GaugeChartWrapper>
-      {/* <GaugeChart id="gauge-chart1" /> */}
       <ReactSpeedometerWrapper>
         <WaterGaugeChart data={chartData}></WaterGaugeChart>
       </ReactSpeedometerWrapper>
@@ -110,14 +102,8 @@ export default function OverviewPageTemplate({
   const { data: waterStreamHour } = useFetch('/waterGraphHour');
 
   const { data: waterStreamDay } = useFetch('/waterGraphDay');
-  console.log('waterStreamDay', waterStreamDay);
-  // console.log('waterStreamDay["data"]', waterStreamDay['data']);
-  // console.log('waterStreamDay.data', waterStreamDay.data);
+
   const { data: waterStreamMonth } = useFetch('/waterGraphMonth');
-
-  const [waterGraph, setWaterGraph] = useState();
-
-  const [deviceId, setDeviceId] = useState();
 
   const selectedDistrict = districts?.find((_district) => _district.id === districtId);
   const facilities = selectedDistrict?.facilities ?? [];
@@ -135,25 +121,10 @@ export default function OverviewPageTemplate({
     month: dayjs(day).format('YYYY'),
   };
 
-  // const { data: waterStream, isLoading: waterStreamLoading } = useQuery(
-  //   ['facilityId', selectedFacility?.id, timeunit, timeText[timeunit]],
-  //   async () => {
-  //     const baseUrl = 'http://localhost:3001';
-  //     const queries = `facilityId=${selectedFacility.id}&timeunit=${timeunit}&time=${timeText[timeunit]}`;
-  //     const { data } = await axios.get(baseUrl + `/waterGraph?${queries}`);
-  //     return data;
-  //   },
-
-  //   {
-  //     enabled: !!selectedFacility?.id,
-  //     cacheTime: 0,
-  //   },
-  // );
-
   const { data: overview, isLoading: overviewLoading } = useQuery(
     ['facilityId', selectedFacility?.id, timeunit, timeText[timeunit]],
     async () => {
-      const baseUrl = 'http://localhost:3001';
+      const baseUrl = 'http://175.125.92.118:3001';
       const queries = `facilityId=${selectedFacility.id}&timeunit=${timeunit}&time=${timeText[timeunit]}`;
       const { data } = await axios.get(baseUrl + `/allAboutFacility?${queries}`);
       return data;
@@ -185,21 +156,6 @@ export default function OverviewPageTemplate({
     closeCalendar();
   };
 
-  const [connectionState, setConnectionState] = useState(true);
-
-  const [rawLevelSwitch, setRawLevelSwitch] = useState(true);
-  const [feedPump, setFeedPump] = useState(false);
-  const [roPump, setRopump] = useState(true);
-  const [drinkLevelSwitch, setDrinkLevelSwitch] = useState(false);
-  // const { data: waterGraph } = useFetch(`/waterGraph`, {
-  //   method: 'GET',
-  //   headers: {},
-  //   body: JSON.stringify({
-  //     deviceId: facilityId,
-  //     timeUnit: timeunit,
-  //     time: timeText,
-  //   }),
-  // });
   return (
     <Contents>
       <OverviewWrapper>
@@ -241,7 +197,6 @@ export default function OverviewPageTemplate({
                 <City> {overview.facilityName} </City>
                 <ConnectionRow>
                   <Connection> Connection </Connection>
-                  {/* <PumpState isOn={rawLevelSwitch} /> */}
                   <ConnectionStatus>
                     {overview.connection ? (
                       <img src={onIcon} alt="on" height={19} />
@@ -250,15 +205,6 @@ export default function OverviewPageTemplate({
                     )}
                   </ConnectionStatus>
 
-                  {/* <ConnectionIconWrapper>
-                    <FaCircle color="springgreen"></FaCircle>
-                  </ConnectionIconWrapper>
-
-                  <OnWrapper> On</OnWrapper>
-                  <ConnectionIconWrapper>
-                    <FaCircle color="red"></FaCircle>
-                  </ConnectionIconWrapper>
-                  <OffWrapper> Off</OffWrapper> */}
                 </ConnectionRow>
               </ConnectionHeaderWrapper>
               <MapWrapper>
@@ -279,7 +225,7 @@ export default function OverviewPageTemplate({
                   imageSrc={WaterLogoSrc}
                   text={'농축수 순간 유량'}
                 />
-                {/* <CircularGaugeChart></CircularGaugeChart> */}
+
                 <GagueChartComponent
                   chartData={overview?.treatedFlowRate}
                   rateData={overview?.treatedFlowRate}
@@ -361,8 +307,6 @@ export default function OverviewPageTemplate({
                   </TreatedCardContents>
                 </Card>
               </TreatedWaterCardWrapper>
-
-              {/* </LeftAlignWrapper> */}
             </FacilityStructureImgWrapper>
           </>
         )}
