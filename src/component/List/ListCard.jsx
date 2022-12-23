@@ -24,7 +24,7 @@ const TextWrapper = styled.div`
   gap: 0.25rem;
 `;
 
-export default function FailityCard({ data /* see data tab */ }) {
+export default function FailityCard({ index, data /* see data tab */ }) {
   const imgSrc = '../../img/cards/' + String(data.imgSrc) + '.jpg';
   // const imgSrc = 'public/img/cards' + String(data.imgSrc) + '.jpg';
   return (
@@ -32,16 +32,12 @@ export default function FailityCard({ data /* see data tab */ }) {
       <CardActionArea>
         <CardMedia
           component="img"
-          //   height="140"
-          //   image="public\img\cards\043_Kesra.jpg"
-          //   src="public\img\cards\043_Kesra.jpg"
           src={imgSrc}
-          //   image="src\img\cards\facility_1.PNG"
           alt="facility1"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {data.id} {data.name}
+            {index} {data.name}
           </Typography>
           <TextWrapper>
             <div>
