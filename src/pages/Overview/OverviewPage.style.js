@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const Contents = styled.div`
   padding: 1.5rem;
+  min-height: calc(100vh - 300px);
 `;
 
 const SelectRow = styled.div`
@@ -9,7 +10,7 @@ const SelectRow = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 10px;
+  // padding: 10px;
 `;
 
 const SelectLocation = styled.div``;
@@ -63,7 +64,13 @@ const ConnectionStatus = styled.div`
 `;
 
 const ReactSpeedometerWrapper = styled.div`
-  height: 20vh;
+  height: 180px;
+  width: 100%;
+
+  & > div {
+    height: 100%;
+    width: 100%;
+  }
 `;
 
 const FlowRateText = styled.h2`
@@ -86,24 +93,26 @@ const WaterGraphWrapper = styled.div`
 const MonitoringWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 1rem;
   justify-content: space-around;
+  width: 100%;
+  height: 600px;
+  padding: 1rem 0;
 `;
 
 const GaugeChartColumn = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  align-items: center;
   justify-content: space-evenly;
-  gap: 2rem;
+  flex: 3;
+  width: 100%;
+  height: 100%;
+  gap: 1.5rem;
 `;
 
 const GaugeChartWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+  width: auto;
+  height: auto;
 `;
 
 const OverviewWrapper = styled.div`
@@ -114,7 +123,6 @@ const OverviewWrapper = styled.div`
 const WaterLogo = styled.img`
   height: 3.5rem;
   padding-right: 1rem;
-  /* width: 50px; */
 `;
 
 const FacilityStructureImgWrapper = styled.div`
@@ -123,8 +131,16 @@ const FacilityStructureImgWrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  & > div {
-    position: relative;
+
+  @media(max-width: 1100px){
+    padding: 2rem;
+  }
+
+  @media(max-width: 950px){
+    padding-bottom: 4rem;
+  }
+  @media(max-width:768px){
+    padding: 1rem;
   }
 `;
 const FacilityStructureImg = styled.img`
@@ -132,14 +148,15 @@ const FacilityStructureImg = styled.img`
 `;
 
 const FlowRateWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
 `;
 
 const WaterRateWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
+  padding: 0.5rem 0;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
 `;
 
 const CheckListText = styled.h2`
@@ -160,25 +177,24 @@ const ConnectionIconWrapper = styled.div`
 `;
 
 const LineChartWrapper = styled.div`
-  height: 50vh;
-  width: 110%;
+  width: 100%;
+  height: 100%;
 `;
 
 const DayTextPicker = styled.div`
-  /* padding-top: 1rem; */
   display: flex;
-  /* ali */
 `;
 
 const WaterGraphHeader = styled.div`
   justify-content: space-between;
   display: flex;
   padding-bottom: 1rem;
+  width: 100%;
 `;
 
 const WaterGraphCardWrapper = styled.div`
-  width: 55vw;
-  max-width: 800px;
+  height: calc(100% - 2rem);
+  width: 100%;
 `;
 
 const OutlineIconWrapper = styled.div`
@@ -225,7 +241,11 @@ const DatePickerContainer = styled.div`
   }
 `;
 
-const WaterGraphContainer = styled.div``;
+const WaterGraphContainer = styled.div`
+  flex: 7;
+  width: 70%;
+  height: 100%;
+`;
 
 const ConnectionHeaderWrapper = styled.div``;
 
@@ -233,14 +253,13 @@ const MapWrapper = styled.div``;
 const TopWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-left: 1rem;
 `;
-const TreatedWaterCardWrapper = styled.div`
-  width: 20vw;
-  max-width: 200px;
-  justify-content: flex-end;
-  /* height: 100px; */
-  /* height: 100px; */
+const TreatedWaterInfoWrapper = styled.div`
+  display:flex;
+  
+  gap: 0.5rem;
+  font-size:1.2rem;
+  font-family: Pretendard-Light;
 `;
 
 const LocationText = styled.h2`
@@ -252,16 +271,16 @@ const TreatedWaterCardText = styled.h2`
   font-size: 20px;
 `;
 const TreatedWaterText = styled.h2`
-  font-size: 25px;
+  font-size: 1.6rem;
   font-family: Pretendard-Light;
-  font-weight: bold;
+  
+  // font-weight: bold;
+  margin-right: 1rem;
 `;
 
 const TreatedCardContents = styled.div`
   padding: 15px;
-  width: 20vw;
   height: 130px;
-  /* height: 100px; */
 `;
 
 const TreatedRow = styled.div`
@@ -274,6 +293,7 @@ const TreatedWaterTable = styled.table`
   }
   td {
     padding: 3px;
+    font-size: 1.2rem;
   }
   td:nth-child(2) {
     /* color: red; */
@@ -332,7 +352,7 @@ export {
   ConnectionHeaderWrapper,
   TopWrapper,
   LocationText,
-  TreatedWaterCardWrapper,
+  TreatedWaterInfoWrapper,
   TreatedWaterCardText,
   DatePickerWrapper,
   DatePickerContainer,

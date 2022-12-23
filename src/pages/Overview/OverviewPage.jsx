@@ -8,7 +8,7 @@ export default function MainPage() {
 
   const districtId = parseInt(searchParams.get('districtId'), 10); // 국가
   const facilityId = parseInt(searchParams.get('facilityId'), 10); // 도시
-  console.log(districtId, facilityId);
+
   const changeDistrict = (districtId) => {
     if (!districtId && !searchParams.get('districtId')) {
       return;

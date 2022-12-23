@@ -1,9 +1,7 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState  } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { FaCircle } from 'react-icons/fa';
-import GaugeChart from 'react-gauge-chart';
-import { Card, Tabs, Tab, Typography } from '@mui/material';
+import { Card, Tabs, Tab } from '@mui/material';
 
 import {
   LineChart,
@@ -13,7 +11,6 @@ import {
   SelectItem,
   CalendarButton,
   PumpState,
-  CircularGauge as CircularGaugeChart,
 } from '../../component/Overview';
 
 import useFetch from '../../hooks/useFetch';
@@ -50,7 +47,6 @@ import {
   FlowRateWrapper,
   WaterRateWrapper,
   CheckListText,
-  LineChartWrapper,
   WaterGraphHeader,
   WaterGraphCardWrapper,
   WaterGraphContainer,
@@ -58,18 +54,23 @@ import {
   MapWrapper,
   TopWrapper,
   LocationText,
-  TreatedWaterCardWrapper,
+  TreatedWaterInfoWrapper,
   TreatedWaterText,
   TreatedCardContents,
   TreatedWaterTable,
   // LeftAlignWrapper,
 } from './OverviewPage.style';
 
-const GagueChartComponent = ({ chartData, imageSrc, rateData, text }) => {
+const GagueChartComponent = ({ chartColor, chartData, imageSrc, rateData, text }) => {
+  const gaugeData = {
+    startColor: chartColor.start,
+    endColor: chartColor.end,
+    rate: chartData
+  }
   return (
     <GaugeChartWrapper>
       <ReactSpeedometerWrapper>
-        <WaterGaugeChart data={chartData}></WaterGaugeChart>
+        <WaterGaugeChart data={gaugeData}></WaterGaugeChart>
       </ReactSpeedometerWrapper>
       <WaterRateWrapper>
         <WaterLogo src={imageSrc} height={'1.6rem'} />
@@ -100,15 +101,11 @@ export default function OverviewPageTemplate({
 }) {
   const { data: districts } = useFetch('/api/v1/status');
   const { data: waterStreamHour } = useFetch('/waterGraphHour');
-
   const { data: waterStreamDay } = useFetch('/waterGraphDay');
-
   const { data: waterStreamMonth } = useFetch('/waterGraphMonth');
 
   const selectedDistrict = districts?.find((_district) => _district.id === districtId);
   const facilities = selectedDistrict?.facilities ?? [];
-  console.log('selectedDistrict', selectedDistrict);
-  console.log('도시 목록', facilities);
   const selectedFacility = facilities.find(
     ({ id }) => id === facilityId,
   ); /** facility : { id: 4, name: 'Tokyo' } */ // facility | undefined
@@ -121,7 +118,7 @@ export default function OverviewPageTemplate({
     month: dayjs(day).format('YYYY'),
   };
 
-  const { data: overview, isLoading: overviewLoading } = useQuery(
+  const { data: overview } = useQuery(
     ['facilityId', selectedFacility?.id, timeunit, timeText[timeunit]],
     async () => {
       const baseUrl = 'http://175.125.92.118:3001';
@@ -220,6 +217,7 @@ export default function OverviewPageTemplate({
             <MonitoringWrapper>
               <GaugeChartColumn>
                 <GagueChartComponent
+                  chartColor={{start:'#F1F9B5', end:'#92D723'}}
                   chartData={overview?.concentratedFlowRate}
                   rateData={overview?.concentratedFlowRate}
                   imageSrc={WaterLogoSrc}
@@ -227,6 +225,7 @@ export default function OverviewPageTemplate({
                 />
 
                 <GagueChartComponent
+                  chartColor={{start:'#E0F7FC', end:'#26CBF2'}}
                   chartData={overview?.treatedFlowRate}
                   rateData={overview?.treatedFlowRate}
                   imageSrc={WaterLogoSrc}
@@ -262,8 +261,6 @@ export default function OverviewPageTemplate({
                   />
                 </WaterGraphHeader>
                 <WaterGraphCardWrapper>
-                  <Card>
-                    <LineChartWrapper>
                       {timeunit === 'hour' ? (
                         <LineChart data={waterStreamHour}></LineChart>
                       ) : timeunit === 'day' ? (
@@ -271,8 +268,6 @@ export default function OverviewPageTemplate({
                       ) : (
                         <BarChart data={waterStreamMonth}></BarChart>
                       )}
-                    </LineChartWrapper>
-                  </Card>
                 </WaterGraphCardWrapper>
               </WaterGraphContainer>
             </MonitoringWrapper>
@@ -280,8 +275,22 @@ export default function OverviewPageTemplate({
             <hr />
 
             <CheckListText>Check List</CheckListText>
+            <div>
+              <TreatedWaterText>Treated Water</TreatedWaterText>
+              <div style={{display:'flex', gap:'1rem'}}>
+                <TreatedWaterInfoWrapper>
+                  <p style={{color:'#555'}}>Conductivity</p>
+                  <p style={{fontWeight: 600}}>{overview.treatedWaterConductivity}</p>
+                </TreatedWaterInfoWrapper>
+                <span style={{fontSize:'1.2rem'}}></span>
+                <TreatedWaterInfoWrapper>
+                  <p style={{color:'#555'}}>PH</p>
+                  <p style={{fontWeight: 600}}>{overview.treatedWaterPH}</p>
+                </TreatedWaterInfoWrapper>
+              </div>
+            </div>
             <FacilityStructureImgWrapper>
-              <div>
+              <div style={{ position:'relative' }}>
                 <FacilityStructureImg src={FacilityStructureSrc}></FacilityStructureImg>
 
                 <PumpState isOn={overview.rawLevelSwitch} position={rawLevelSwitchPosition} />
@@ -289,24 +298,6 @@ export default function OverviewPageTemplate({
                 <PumpState isOn={overview.roPump} position={roPumpPosition} />
                 <PumpState isOn={overview.drinkLevelSwitch} position={drinkLevelSwitchPosition} />
               </div>
-
-              <TreatedWaterCardWrapper>
-                <Card elevation={3}>
-                  <TreatedCardContents>
-                    <TreatedWaterText>Treated Water</TreatedWaterText>
-                    <TreatedWaterTable>
-                      <tr>
-                        <td>Conductivity</td>
-                        <td>{overview.treatedWaterConductivity}</td>
-                      </tr>
-                      <tr>
-                        <td>PH</td>
-                        <td>{overview.treatedWaterPH}</td>
-                      </tr>
-                    </TreatedWaterTable>
-                  </TreatedCardContents>
-                </Card>
-              </TreatedWaterCardWrapper>
             </FacilityStructureImgWrapper>
           </>
         )}
