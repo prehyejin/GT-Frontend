@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Contents = styled.div`
   color: white;
-  font-size: 2rem;
+  padding: 1rem;
 `;
 
 const Text = styled.p`

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Text = styled.h2`
   font-family: Pretendard-Light;
@@ -34,19 +34,23 @@ const MenuWrapper = styled.div`
   gap: 1rem;
 `;
 
+const HeaderLink = ({ to, title })=>{
+  const location = useLocation();
+  return (
+    <Link to={to} style={{ textDecoration: 'none', color: location.pathname === to ? '#222' : '#888' }}>
+      <Text>{title}</Text>
+    </Link>
+  )
+}
+
 export default function Header() {
+
   return (
     <Container>
       <MenuWrapper>
-        <Link to="/" style={{ textDecoration: 'none' }}>
-          <Text> List</Text>
-        </Link>
-        <Link to="/overview" style={{ textDecoration: 'none' }}>
-          <Text> Overview</Text>
-        </Link>
-        <Link to="/cctv" style={{ textDecoration: 'none' }}>
-          <Text> CCTV</Text>
-        </Link>
+        <HeaderLink to="/" title="List"/>
+        <HeaderLink to="/overview" title="Overview"/>
+        <HeaderLink to="/cctv" title="CCTV"/>
       </MenuWrapper>
       <LogoWrapper>
         <Logo src="/img/logo/basic_logo.png" />
