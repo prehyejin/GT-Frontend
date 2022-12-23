@@ -1,16 +1,16 @@
 import ReactSpeedometer from 'react-d3-speedometer';
 
-export const WaterGaugeChart = ({ data }) => (
-  <ReactSpeedometer
-    maxValue={20}
-    value={data}
-    // needleColor="red"
-    // startColor="green"
+export const WaterGaugeChart = ({ data }) => {
+  
+  return(<ReactSpeedometer
+    maxValue={30}
+    value={data.rate}
+    // needleColor="red"#F2F7D1 #E1ED97
+    startColor={data.startColor}
     segments={10}
-    // endColor="blue"
+    endColor={data.endColor}
     // textColor={textColor}
-    height={'120'}
     paddingVertical={0}
-  />
-);
+  />)
+  };
 export default WaterGaugeChart;

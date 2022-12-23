@@ -6,9 +6,7 @@ import { color } from '@mui/system';
 const LineChart = ({ data /* see data tab */ }) => (
   <ResponsiveLine
     data={data}
-    margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-    // keys={['y']}
-    // indexBy="x"
+    margin={{bottom: 100, left: 60, top: 20, right: 20}}
     xScale={{ type: 'point' }}
     yScale={{
       type: 'linear',

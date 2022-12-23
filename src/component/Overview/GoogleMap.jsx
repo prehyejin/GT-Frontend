@@ -12,18 +12,11 @@ const GoogleMap = ({ data }) => {
     'https://www.google.com/maps/embed/v1/view?key=AIzaSyDzMsqMXYqBWAx1WPXFWKZDf4i8N7rJ5kY&center=' +
     String(data.lat) +
     ',' +
-    String(data.lat) +
+    String(data.lon) +
     '&zoom=13&maptype=satellite';
-  console.log('data', data);
-  console.log(url);
+
   return (
     <div>
-      {/* <GoogleMapReact
-        bootstrapURLKeys={{ key: 'AIzaSyDzMsqMXYqBWAx1WPXFWKZDf4i8N7rJ5kY' }}
-        defaultCenter={cordinates}
-        center={cordinates}
-        defaultZoom={10}
-      ></GoogleMapReact> */}
       <iframe
         width={500}
         height={130}

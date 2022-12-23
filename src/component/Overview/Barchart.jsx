@@ -8,13 +8,13 @@ const BarChart = ({ data }) => {
       data={data}
       keys={['y']}
       indexBy="x"
-      margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+      margin={{ top:20, right: 10, bottom: 100, left: 60 }}
       padding={0.4}
       valueScale={{ type: 'linear' }}
       defs={[
         linearGradientDef('gradientA', [
-          { offset: 0, color: '#8FE458' },
-          { offset: 100, color: '#58DDFF' },
+          { offset: 0, color: '#81E0F7' },
+          { offset: 100, color: '#E8F587' },
         ]),
       ]}
       fill={[
