@@ -1,17 +1,16 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
-import useFetch from '../../hooks/useFetch';
+import { useQuery } from '@tanstack/react-query';
+import request from '../../api/fetcher';
 
 import FailityCard from '../../component/List/ListCard';
-import Header from '../../component/Layout/Header';
-
 import { SelectItem } from '../../component/Overview';
 
 const ListFullWrapper = styled.div`
   width: 100%;
   padding: 1.25rem;
   max-width: 1280px;
+  min-height: calc(100% - 260px);
   margin: 0 auto;
 `;
 
@@ -45,18 +44,33 @@ const SelectRow = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 10px;
+  padding: 1rem 0 2rem 0;
 `;
 
+const getDistricts = async ()=>{
+  const response = await request.get(`/districts`);
+  return response.data;
+}
+const getFacilities = async (districtId) =>{
+  const response = await request.get(`/facilityCardList?districtId=${districtId}`);
+  return response.data;
+}
+
+function useDistricts(){
+  return useQuery(['/districts'], getDistricts);
+}
+function useFacilityCardList(selectedDistrictId){
+  return useQuery(['facilityCardList', selectedDistrictId], getFacilities, { enabled: !!selectedDistrictId});
+}
+
 export default function ListPageTemplate({ districtId, changeDistrict }) {
-  const { data: districts } = useFetch('/districts');
+  const {data: districts } = useDistricts();
+  const {data: facilityCardList, isLoading} = useFacilityCardList(districtId);
+
   const selectedDistrict = districts?.find((_district) => _district.id === districtId);
 
-  const { data: facilityCardList, isLoading } = useFetch('/facilityCardList');
 
-  console.log(facilityCardList);
   return (
-    <>
       <ListFullWrapper>
         <SelectRow>
           <SelectWrapper>
@@ -64,7 +78,6 @@ export default function ListPageTemplate({ districtId, changeDistrict }) {
               label="구역"
               onChangeSelected={({ target: { value /* district.id */ } }) => {
                 changeDistrict(value);
-                // changeFacility(null);
               }}
               selected={selectedDistrict ? selectedDistrict.id : ''}
               items={districts}
@@ -76,16 +89,15 @@ export default function ListPageTemplate({ districtId, changeDistrict }) {
         {selectedDistrict && <LoactionText>{selectedDistrict.name}</LoactionText>}
         <FacilityCardList>
           {!isLoading &&
-            facilityCardList.map((facility) => (
+            facilityCardList.map((facility, index) => (
               <FacilityCardWrapper
                 key={facility.id}
-                to={`/overview?districtId=${1}&facilityId=${facility.id}`}
+                to={`/overview?districtId=${districtId}&facilityId=${facility.id}`}
               >
-                <FailityCard data={facility}></FailityCard>
+                <FailityCard index={index+1} data={facility}></FailityCard>
               </FacilityCardWrapper>
             ))}
         </FacilityCardList>
       </ListFullWrapper>
-    </>
   );
 }
